@@ -18,7 +18,9 @@ import shipping from '../assets/shipping.jpg';
     constructor(props){
      super(props)
      this.state = {
-      activeRowKey: null
+      activeRowKey: null,
+      show: false,
+      mau:'#1DA7FC',
     }; 
  }
     static navigationOptions = ({navigation})=>{
@@ -54,7 +56,7 @@ import shipping from '../assets/shipping.jpg';
       onPress: () => console.log('Cancel Pressed'),
       style: 'cancel',
     },
-    {text: 'OK', onPress: () => console.log('OK Pressed')},
+    {text: 'OK', onPress: () => this.setState({show:true,mau:'#f5f5dc'})},
   ],
   {cancelable: false},
 );
@@ -63,6 +65,8 @@ import shipping from '../assets/shipping.jpg';
 
   render() {
 //   const {job} = this.props.job;
+//   const {show} = this.state.show;
+//  console.log(show)
 const {btnStatus, myData } = this.props;
 const swipeSettings = {
   autoClose: true,
@@ -85,7 +89,7 @@ const swipeSettings = {
                   [                              
                     {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                     {text: 'Yes', onPress: () => {        
-                      myData.splice(this.props.index, 1); 
+                      myData.Disable(this.props.index, 1); 
                       //Refresh FlatList ! 
                       this.props.parentFlatList.refreshFlatList(deletingRow);
                     }},
@@ -102,19 +106,29 @@ const swipeSettings = {
    
     return (
       <Swipeout {...swipeSettings}>
-         <TouchableOpacity style={styles.wrapper_oder} >
+         <TouchableOpacity style={{backgroundColor:this.state.mau,
+         borderBottomColor:'#fff',
+         borderBottomWidth: 1,
+        }}
+          //  onPress={this.props.onPress} 
+          //  disabled={this.state.show}                                      
+             >
                  <View style={styles.jobcutom} >
                     <Image source={shipping} style={{ width: 40, height: 40 }}/>
                     <Text>Công Việc{` :  `+this.props.job} </Text>
-                    <TouchableOpacity onPress={this.props.onPress} >
-                        <Image source={backSpecial} style={{ width: 25, height: 25 }}/>
+                    <TouchableOpacity onPress={this.props.onPress} disabled={this.state.show} >
+                        <Image source={backSpecial} style={{ width: 25, height: 25 }}/>                      
                     </TouchableOpacity>                       
                 </View>
                 <View style={styles.controlStyle}>
-                        <TouchableOpacity style={styles.signInStyle} onPress={this.AcceptJob} >
+                        <TouchableOpacity style={styles.signInStyle} 
+                          disabled={this.state.show}
+                          onPress={this.AcceptJob} >
                             <Text style={ styles.activeStyle }>Accept</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.signUpStyle} onPress={this.RejectJob} >
+                        <TouchableOpacity style={styles.signUpStyle} 
+                          disabled={this.state.show}
+                          onPress={this.RejectJob} >
                             <Text style={styles.activeStyle }>Reject</Text>
                         </TouchableOpacity>
                 </View> 
@@ -127,7 +141,7 @@ const swipeSettings = {
 // const { width } = Dimensions.get('window');
 function mapStateToProps(state) {
   return { 
-      myData: state.dataFake,
+    myData: state.DataJob.Job,
       btnStatus: state.filterStatus
   };
 }

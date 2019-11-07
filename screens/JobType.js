@@ -8,6 +8,7 @@ import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import Filter from './Filter';
 import JobTypeItems from './JobTypeItems';
+import { FETCH_JOB } from '../redux/actionCreators';
 
 
 
@@ -33,6 +34,18 @@ import JobTypeItems from './JobTypeItems';
         });
        
     }   
+    _renderMessage =()=>{
+        return(
+            <View style={styles.view_message}>
+            <Text style={styles.message}>{this.getJobMessage()}</Text>
+        </View>)
+    }
+    
+    getJobMessage() {
+        const {error, isLoading} = this.props;
+        if (isLoading) return '...Loading';
+        if (error) return 'Vui Lòng Thử Lại....';
+    }
   
   render() {
   
@@ -40,9 +53,10 @@ import JobTypeItems from './JobTypeItems';
     return (
 
       <View  style={styles.wrapper}>    
-               <TouchableOpacity style={styles.view_button}>  
-                    <Button title="GetJOB ....." onPress={this.onChooseImagePress}/>
+               <TouchableOpacity style={styles.view_button} onPress={() =>this.props.FETCH_JOB()}>  
+                        <Text style={styles.textGetjob}>GetJob...</Text>
                 </TouchableOpacity>  
+                {this.props.error?this._renderMessage():null}  
        
             <View style={styles.activeStyle}>    
             <FlatList           
@@ -52,7 +66,7 @@ import JobTypeItems from './JobTypeItems';
             parentFlatList={this}
              job={item.job}  
              id={item.Oder_id}           
-             onPress={() => this.props.navigation.navigate('JobList')}         
+             onPress={() => this.props.navigation.navigate('JobList',{detail:item.oder_detail,})}         
               />}
             keyExtractor={item => item.Oder_id}
             refreshControl={
@@ -70,11 +84,13 @@ import JobTypeItems from './JobTypeItems';
 
 function mapStateToProps(state) {
     return { 
-        myData: state.dataFake,
+        myData: state.DataJob.Job,
+        error: state.DataJob.error,
+        isLoading: state.DataJob.isLoading,
         btnStatus: state.filterStatus
     };
   }
-export default connect(mapStateToProps)(JobType);
+export default connect(mapStateToProps,{FETCH_JOB})(JobType);
 
 const styles = StyleSheet.create({
     wrapper: { flex: 1, backgroundColor: '#fff' },
@@ -101,5 +117,21 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingVertical: 9,
         marginBottom:15,
-    }
+        justifyContent:'center',
+        alignItems: 'center',
+    },
+    message:{
+        color: 'blueviolet',
+        fontSize: 30,
+        alignItems: 'center',
+    },
+    view_message:{
+        backgroundColor:'#fff',
+         flex:30,
+        alignItems:'center',
+    },
+    textGetjob:{
+        color:'yellow',
+        fontSize: 15,
+    },
 });

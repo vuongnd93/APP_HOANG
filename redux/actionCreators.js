@@ -33,4 +33,24 @@ export function showProcessing() {
 }
 export function changer_color() {
     return { type: 'CHANGER_COLOR' };
+
 }
+
+export function FETCH_JOB(){
+    return { type: 'FETCH_JOB' };
+}
+
+export  function FETCH_SUCCEEDED(receivedJob){
+    return {
+        type: 'FETCH_SUCCEEDED',
+        receivedJob
+    }
+}
+
+export const FETCH_FAILED = (error) => {
+    return {
+        type: 'FETCH_FAILED',
+        error
+    }
+}
+

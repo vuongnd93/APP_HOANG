@@ -40,10 +40,12 @@ import Filter from './Filter';
   
   getWordList() {
     const {btnStatus, myData } = this.props;
+    const {params}= this.props.navigation.state;
+    const job_Detail= params.detail;
     console.log(btnStatus);
     if (btnStatus === 'PROCESSING') return myData.filter(e => e.status === 'PROCESSING');
     if (btnStatus === 'COMPLETED') return myData.filter(e => e.status === 'COMPLETED');
-    return myData;
+    return job_Detail;
 }
 
   render() {
@@ -55,12 +57,12 @@ import Filter from './Filter';
             
             data={this.getWordList()}
             renderItem={({ item }) => <JobListItems
-             id={item.Oder_id}
+             id={item.Order}
              time={item.Odertime}
              status={item.status}
-             onPress={() => this.props.navigation.navigate('JobDetail',{detail:item.oder_detail,})}       
+             onPress={() => this.props.navigation.navigate('JobDetail',{detail:item,})}       
               />}
-            keyExtractor={item => item.Oder_id}
+            keyExtractor={item =>item.Oder_detail_id}
       />
          </View>
          <Filter/>
