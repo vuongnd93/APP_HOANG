@@ -13,9 +13,11 @@
 //     ]);
 // }
 
-import { call, all } from 'redux-saga/effects';
-import { watchFetchJob } from './Jobsagas';
+import {all,fork} from 'redux-saga/effects';
+import {watchFetchJob} from './Jobsagas';
+import {watchStartJob} from './Jobsagas';
 
 export default function* rootSaga() {
-    yield call(watchFetchJob);              
+    yield  fork(watchFetchJob),
+    yield  fork(watchStartJob);      
 }

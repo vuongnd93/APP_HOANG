@@ -20,8 +20,8 @@ import { START,END,ToggleBtn } from '../redux/actionCreators';
     constructor(props){
      super(props)
      this.state ={
-      btnStartEndName: 'START',
-      jobstart: 'BACK'
+      btnStartJob: 'START',
+    
      }
      this._onPressAdd = this._onPressAdd.bind(this); 
     }
@@ -83,24 +83,42 @@ import { START,END,ToggleBtn } from '../redux/actionCreators';
             },3000);
               
     }
-    _onStartEndJob = async ()=>{
-        try {
-         let status = await AsyncStorage.getItem('status');
-         console.log('status = ',status);
-         if (status ==='PROCESSING'){
-          await AsyncStorage.setItem('status', 'STOP');
-          this.setState({
-            btnStartEndName: 'START',
-          });
-         }else {
-            await AsyncStorage.setItem('status','PROCESSING');
-            this.setState({
-              btnStartEndName: 'END',
-            });
-         }
-        } catch (error) {
-           console.log(error);
-        }
+    _onStartJob = async ()=>{
+      const {id} = this.props.navigation.state.params;
+      let stateJob= this.props.stateJob;
+      Alert.alert(
+        'Đồng ý! Bắt đầu công việc',
+        '',
+        [
+          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () =>this.props.START(id,stateJob)},
+        ],
+        {cancelable: false},
+      );
+
+      //  this.props.START(START);
+        // try {
+        //  let status = await AsyncStorage.getItem('status');
+        //  console.log('status = ',status);
+        //  if (status ==='PROCESSING'){
+        //   await AsyncStorage.setItem('status', 'STOP');
+        //   this.setState({
+        //     btnStartEndName: 'START',
+        //   });
+        //  }else {
+        //     await AsyncStorage.setItem('status','PROCESSING');
+        //     this.setState({
+        //       btnStartEndName: 'END',
+        //     });
+        //  }
+        // } catch (error) {
+        //    console.log(error);
+        // }
       }
    
     
@@ -246,9 +264,8 @@ import { START,END,ToggleBtn } from '../redux/actionCreators';
   render() {
     
     const {params}= this.props.navigation.state;
-    const {id} = this.props.navigation.state.params;
     const dataget = params.detail;
-    console.log('ID get from state la:',id);
+    // console.log('ID get from state la:',id);
     let mainView= (params && params.isSaving == true)? <ActivityIndicator/> :
     <View style={styles.wrapper}>
           
@@ -280,8 +297,10 @@ import { START,END,ToggleBtn } from '../redux/actionCreators';
                 
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.signUpStyle} onPress={() => {this.props.ToggleBtn(id),this._onStartEndJob()}} >
-                <Text style={styles.activeStyle }>{this.state.btnStartEndName}</Text>
+            <TouchableOpacity style={styles.signUpStyle}
+               disabled={this.props.stateJob==='PROCESSING'?true:false}
+               onPress={() => {this._onStartJob()}} >
+                <Text style={styles.activeStyle }>{this.props.stateJob}</Text>
             </TouchableOpacity>
   </View>  
             <AddModal ref = {'addModal'}>
@@ -315,7 +334,8 @@ import { START,END,ToggleBtn } from '../redux/actionCreators';
 function mapStateToProps(state) {
   return {
     myData: state.dataFake,
-    btnStatus: state.filterStatus
+    btnStatus: state.filterStatus,
+    stateJob: state.StartJob
    };
 }
 

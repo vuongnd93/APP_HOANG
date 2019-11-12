@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image,
-  Button,Alert,TouchableOpacity,ScrollView,
+import { Text, View, StyleSheet, Image
+ ,Alert,TouchableOpacity,ScrollView,
   Dimensions,StatusBar,TextInput,Modal,TouchableHighlight
 ,FlatList,RefreshControl } from 'react-native';
  import { connect } from 'react-redux';
 import axios from 'axios';
+import Button from 'react-native-button';
 import * as ImagePicker from 'expo-image-picker';
 import Filter from './Filter';
 import JobTypeItems from './JobTypeItems';
@@ -18,14 +19,33 @@ import { FETCH_JOB } from '../redux/actionCreators';
     constructor(props){
      super(props)
      this.state = ({
-        deletedRowKey: null,            
+        deletedRowKey: null,
+        ColorConnect:'#00ffff',            
     });   
  }
-    static navigationOptions = ({navigation})=>{
-      return { 
-        title : 'List công việc'    
-      }    
-     };
+    // static navigationOptions = ({navigation})=>{
+    //   return { 
+    //     title : 'List công việc'    
+    //   }    
+    //  };
+     static navigationOptions = ({navigation})=>{
+        const {params={}}=navigation.state;
+        let headerTitle='Công Việc';
+        let headerTitleStyle={color:'#dc143c'};
+        let headerRight= (<Button
+          containerStyle={{margin:10,padding:10,borderRadius:50, backgroundColor:'#00ffff'}}
+          style={{fontSize:15,color:'white'}}
+          onPress={()=>{
+            params.onsave();
+          }}
+         > 
+         </Button>); 
+        let headerBackTitle = 'Back';
+        return { 
+        headerTitle,headerTitleStyle,headerRight,headerBackTitle,
+        }    
+       };
+  
      refreshFlatList = (activeKey) => {
         this.setState((prevState) => {
             return {

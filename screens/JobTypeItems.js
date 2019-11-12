@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image,
   Button,Alert,TouchableOpacity,ScrollView,
-  Dimensions,StatusBar,TextInput,Modal,TouchableHighlight
+  Dimensions,StatusBar,TextInput,Modal,TouchableHighlight,
+  AsyncStorage
  } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -20,6 +21,7 @@ import shipping from '../assets/shipping.jpg';
      this.state = {
       activeRowKey: null,
       show: false,
+      hideReject: false,
       mau:'#1DA7FC',
     }; 
  }
@@ -28,6 +30,43 @@ import shipping from '../assets/shipping.jpg';
         title : 'List công việc'    
       }    
      };
+
+     async componentWillMount() {
+      let idActive= this.props.id;
+      let status = await AsyncStorage.getItem(idActive);
+      console.log('Constructor, status = ',status);
+  
+      if (status === 'Reject') {
+        // PROCESSING -> btnStartEnd lable shows END
+        this.setState({
+         show: true,
+         mau:'#f5f5dc',
+        });
+      } else {
+        // Stop -> btnStartEnd lable shows START
+        this.setState({
+          show: false,
+        });
+      }
+   }
+   
+   _onAceptJob = async ()=>{
+    try {
+      await AsyncStorage.setItem('JobTypeStatus','Acept');
+    } catch (error) {
+       console.log(error);
+    }
+  }
+  _onRejectJob = async ()=>{
+    try { 
+      let idActive = this.props.id    
+      await AsyncStorage.setItem(idActive,'Reject')
+      this.setState({show:true,mau:'#f5f5dc'})    
+    } catch (error) {
+       console.log(error);
+    }
+  }
+
   AcceptJob =()=>{
        Alert.alert(
   'Đồng ý! Nhận công việc',
@@ -39,7 +78,7 @@ import shipping from '../assets/shipping.jpg';
       onPress: () => console.log('Cancel Pressed'),
       style: 'cancel',
     },
-    {text: 'OK', onPress: () => console.log('OK Pressed')},
+    {text: 'OK', onPress: () =>this._onAceptJob()},
   ],
   {cancelable: false},
 );
@@ -56,7 +95,7 @@ import shipping from '../assets/shipping.jpg';
       onPress: () => console.log('Cancel Pressed'),
       style: 'cancel',
     },
-    {text: 'OK', onPress: () => this.setState({show:true,mau:'#f5f5dc'})},
+    {text: 'OK', onPress: () => this._onRejectJob()},
   ],
   {cancelable: false},
 );
@@ -89,7 +128,7 @@ const swipeSettings = {
                   [                              
                     {text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                     {text: 'Yes', onPress: () => {        
-                      myData.Disable(this.props.index, 1); 
+                      myData.splice(this.props.index, 1); 
                       //Refresh FlatList ! 
                       this.props.parentFlatList.refreshFlatList(deletingRow);
                     }},

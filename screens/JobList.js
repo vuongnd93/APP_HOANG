@@ -57,10 +57,11 @@ import Filter from './Filter';
             
             data={this.getWordList()}
             renderItem={({ item }) => <JobListItems
+             idAction={item.Oder_detail_id}
              id={item.Order}
              time={item.Odertime}
              status={item.status}
-             onPress={() => this.props.navigation.navigate('JobDetail',{detail:item,})}       
+             onPress={() => this.props.navigation.navigate('JobDetail',{detail:item,id:item.Oder_detail_id})}       
               />}
             keyExtractor={item =>item.Oder_detail_id}
       />

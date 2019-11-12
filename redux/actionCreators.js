@@ -7,11 +7,14 @@ export function INCREMENT() {
 export function DECREMENT() {
     return { type: 'DECREMENT' };
 }
-export function START() {
-    return { type: 'START' };
+export function START(id,stateJob) {
+    return { type: 'START',id,stateJob };
 }
-export function END() {
-    return { type: 'END' };
+export function STARTJOB() {
+    return { type: 'STARTJOB' };
+}
+export function COMPLETED() {
+    return { type: 'COMPLETED' };
 }
 export function ToggleBtn(id) {
     return { 
