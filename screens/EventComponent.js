@@ -3,20 +3,22 @@ import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, View,
   Alert,StyleSheet,Button,TouchableOpacity,Image} from 'react-native';
 import AddModal from '../components/addmodal';
+import { connect } from 'react-redux';
 import Form from '../components/form';
+import {COMPLETED} from '../redux/actionCreators';
 import backSpecial from '../assets/buy_plus.png';
 
 
 
-export default class  EventComponent extends React.Component {
-  constructor(props){
-    super(props)
-    this.state ={
-      isAdding: false
+  class  EventComponent extends React.Component {
+    constructor(props){
+      super(props)
+      this.state ={
+        isAdding: false
+      }
+      this._onPressAdd = this._onPressAdd.bind(this); 
+      this._onAddForm =  this._onAddForm.bind(this); 
     }
-    this._onPressAdd = this._onPressAdd.bind(this); 
-    this._onAddForm =  this._onAddForm.bind(this); 
-   }
    _onAddForm(){
     if(this.state.isAdding ===false){
       this.setState({
@@ -33,7 +35,49 @@ export default class  EventComponent extends React.Component {
     this.refs.addModal.showAddModal();
 }
 
+_onCompletedJob = async ()=>{
+  const {params}= this.props.navigation.state;
+   idOder = params.id
+  console.log(idOder);
+  let stateJob= this.props.stateJob;
+  Alert.alert(
+    'Đồng ý! Hoàn thành Công việc',
+    '',
+    [
+      {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () =>this.props.COMPLETED(idOder,stateJob)},
+    ],
+    {cancelable: false},
+  );
+
+  //  this.props.START(START);
+    // try {
+    //  let status = await AsyncStorage.getItem('status');
+    //  console.log('status = ',status);
+    //  if (status ==='PROCESSING'){
+    //   await AsyncStorage.setItem('status', 'STOP');
+    //   this.setState({
+    //     btnStartEndName: 'START',
+    //   });
+    //  }else {
+    //     await AsyncStorage.setItem('status','PROCESSING');
+    //     this.setState({
+    //       btnStartEndName: 'END',
+    //     });
+    //  }
+    // } catch (error) {
+    //    console.log(error);
+    // }
+  }
+
+
   render() {
+    console.log(this.props.stateJob);
     return (
      <View style={styles.container} >
         <View style={styles.header} >
@@ -54,7 +98,9 @@ export default class  EventComponent extends React.Component {
       
          {/* <View style={styles.acidentDetail} >           */}
             <View  style={styles.sukien_buttom}> 
-              <TouchableOpacity style={styles.endjob}>
+              <TouchableOpacity style={styles.endjob}
+               disabled={this.props.stateJob==='PROCESSING'?false:true}
+               onPress={() => {this._onCompletedJob()}}   >      
                      <Text style={styles.sukien_text}>Completed</Text>                    
               </TouchableOpacity >
             </View>
@@ -65,6 +111,16 @@ export default class  EventComponent extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    myData: state.dataFake,
+    btnStatus: state.filterStatus,
+    stateJob: state.StartJob
+   };
+}
+
+export default connect(mapStateToProps,{COMPLETED})(EventComponent);
 
 const styles = StyleSheet.create({
   container:{

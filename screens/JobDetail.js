@@ -265,7 +265,8 @@ import { START,END,ToggleBtn } from '../redux/actionCreators';
     
     const {params}= this.props.navigation.state;
     const dataget = params.detail;
-    // console.log('ID get from state la:',id);
+    const id = params.detail.Oder_detail_id;
+    console.log('ID get from job list:',id);
     let mainView= (params && params.isSaving == true)? <ActivityIndicator/> :
     <View style={styles.wrapper}>
           
@@ -292,15 +293,25 @@ import { START,END,ToggleBtn } from '../redux/actionCreators';
       </View> 
       <View style={styles.controlStyle}>
             <TouchableOpacity style={styles.signInStyle}
-            onPress={() => this.props.navigation.navigate('EventComponent')}>
+            onPress={() => this.props.navigation.navigate('EventComponent',{id:id})}>
                 <Text style={ styles.activeStyle }>Sự Kiện</Text>
                 
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.signUpStyle}
-               disabled={this.props.stateJob==='PROCESSING'?true:false}
+               disabled={
+                 (this.props.stateJob==='PROCESSING')?true:
+                 (this.props.id!==this.props.actionID)&(this.props.stateJob==='COMPLETED')?false:
+                 (this.props.id===this.props.actionID)&(this.props.stateOder==='COMPLETED')?true: false                
+                }
                onPress={() => {this._onStartJob()}} >
-                <Text style={styles.activeStyle }>{this.props.stateJob}</Text>
+                <Text style={styles.activeStyle }>{
+                 (this.props.id===this.props.actionID)?this.props.stateJob:
+                 (this.props.id!==this.props.actionID)&(this.props.stateOder==='COMPLETED')?'START':
+                 (this.props.id===this.props.actionID)&(this.props.stateOder==='COMPLETED')?this.props.stateOder:
+                 this.props.stateJob
+
+                  }</Text>
             </TouchableOpacity>
   </View>  
             <AddModal ref = {'addModal'}>
@@ -335,6 +346,8 @@ function mapStateToProps(state) {
   return {
     myData: state.dataFake,
     btnStatus: state.filterStatus,
+    stateOder: state.stateOder.stateOder,
+    actionID : state.stateOder.idOder,
     stateJob: state.StartJob
    };
 }

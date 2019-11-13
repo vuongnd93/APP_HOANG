@@ -16,8 +16,10 @@
 import {all,fork} from 'redux-saga/effects';
 import {watchFetchJob} from './Jobsagas';
 import {watchStartJob} from './Jobsagas';
+import {watchCompletedJob} from './Jobsagas';
 
 export default function* rootSaga() {
     yield  fork(watchFetchJob),
-    yield  fork(watchStartJob);      
+    yield  fork(watchStartJob); 
+    yield  fork(watchCompletedJob);     
 }

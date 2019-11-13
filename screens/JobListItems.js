@@ -37,13 +37,21 @@ import * as ImagePicker from 'expo-image-picker';
     return (
      
          <TouchableOpacity
-          disabled={(this.props.idAction===this.props.actionID)|(this.props.actionID==='')?false:true}
+          disabled={
+        (this.props.idAction===this.props.actionID)&(this.props.stateOder==='PROCESSING')|(this.props.actionID==='')?false:
+        (this.props.idAction===this.props.actionID)&(this.props.stateOder==='COMPLETED')?true:
+        (this.props.idAction!==this.props.actionID)&(this.props.stateOder==='COMPLETED')?false:true
+          }
           onPress={this.props.onPress}>     
            
           <View 
           style={{
             flexDirection: 'row',
-            backgroundColor:(this.props.idAction===this.props.actionID)|(this.props.actionID==='')?'#DD3C6E':'#808080',
+            backgroundColor:
+            (this.props.idAction===this.props.actionID)&(this.props.stateOder==='PROCESSING')|(this.props.actionID==='')?'#DD3C6E':
+            (this.props.idAction===this.props.actionID)&(this.props.stateOder==='COMPLETED')?'#808080':
+            (this.props.idAction!==this.props.actionID)&(this.props.stateOder==='COMPLETED')?'#DD3C6E':'#808080'
+            ,            
             // backgroundColor: '#DD3C6E',
             marginHorizontal :10,
             marginTop : 10,
@@ -68,7 +76,11 @@ import * as ImagePicker from 'expo-image-picker';
                     </View> 
               </View> 
               <TouchableOpacity 
-                  disabled={(this.props.idAction===this.props.actionID)|(this.props.actionID==='')?false:true}
+                  disabled={
+                    (this.props.idAction===this.props.actionID)&(this.props.stateOder==='PROCESSING')|(this.props.actionID==='')?false:
+                    (this.props.idAction===this.props.actionID)&(this.props.stateOder==='COMPLETED')?true:
+                    (this.props.idAction!==this.props.actionID)&(this.props.stateOder==='COMPLETED')?false:true
+                  }
               onPress={this.props.onPress} >
                   <Image source={backSpecial} style={{ width: 20, height: 20, marginVertical:20 }}/>
               </TouchableOpacity>

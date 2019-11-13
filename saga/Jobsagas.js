@@ -35,4 +35,22 @@ export function* watchStartJob() {
     yield takeLatest('START', statJob);
 }
 
+function* CompletedJob(action) {
+    console.log(`This is COMPLETED_JOB`);
+    console.log(action.idOder);
+    try {
+        const result = yield Api.postStartJob(action.idOder); 
+        if (result =='OK'){
+            yield put({ type: 'COMPLETEDJOB'});  
+            yield put({ type: 'CHANGERCOMPLETED', id:action.idOder});
+        }        
+               
+    } catch (error) {        
+        yield put({ type: 'ERROR'});
+    }
+}
+export function* watchCompletedJob() {
+    yield takeLatest('COMPLETED', CompletedJob);
+}
+
 

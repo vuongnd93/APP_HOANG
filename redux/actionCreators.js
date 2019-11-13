@@ -13,8 +13,11 @@ export function START(id,stateJob) {
 export function STARTJOB() {
     return { type: 'STARTJOB' };
 }
-export function COMPLETED() {
-    return { type: 'COMPLETED' };
+export function COMPLETEDJOB() {
+    return { type: 'COMPLETEDJOB' };
+}
+export function COMPLETED(idOder) {
+    return { type: 'COMPLETED',idOder };
 }
 export function ToggleBtn(id) {
     return { 
