@@ -3,7 +3,7 @@
     "name": "?",
     "slug": "Appgps",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android",
@@ -34,10 +34,7 @@
       "bundleIdentifier": "hc.com.vn",
       "config": {
         "googleMapsApiKey": "AIzaSyAoRq60HSExgJMuCmxUcInNEGwDfa5hIJA "
-      }  
-      
+      }
     }
-
   }
-
 }

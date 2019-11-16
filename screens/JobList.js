@@ -1,28 +1,28 @@
 import * as React from 'react';
-import { Text, View, StyleSheet,ScrollView,FlatList,AsyncStorage } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
 import Constants from 'expo-constants';
 import { connect } from 'react-redux';
-import JobListItems  from './JobListItems';
+import JobListItems from './JobListItems';
 import Filter from './Filter';
 
- class JobList extends React.Component {
-    constructor(props){
-     super(props);
-     this.state= {
-       datas : [],
-     } 
+class JobList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      datas: [],
+    }
   }
-  
-  static navigationOptions = ({navigation})=>{
-    return { 
-      title : 'Công việc'    
-    }    
-   };
-   
-   async componentWillMount() {
-     
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Công việc'
+    }
+  };
+
+  async componentWillMount() {
+
     let status = await AsyncStorage.getItem('status');
-    console.log('Constructor, status = ',status);
+    console.log('Constructor, status = ', status);
 
     if (status === 'PROCESSING') {
       // PROCESSING -> btnStartEnd lable shows END
@@ -35,48 +35,47 @@ import Filter from './Filter';
         btnStartEndName: 'START',
       });
     }
- }
-   
-  
+  }
+
+
   getWordList() {
-    const {btnStatus, myData } = this.props;
-    const {params}= this.props.navigation.state;
-    const job_Detail= params.detail;
-    console.log(btnStatus);
+    const { btnStatus, myData } = this.props;
+    const { params } = this.props.navigation.state;
+    const job_Detail = params.detail;
     if (btnStatus === 'PROCESSING') return myData.filter(e => e.status === 'PROCESSING');
     if (btnStatus === 'COMPLETED') return myData.filter(e => e.status === 'COMPLETED');
     return job_Detail;
-}
+  }
 
   render() {
-   
+
     return (
       <View style={styles.container}>
-         <View style={styles.listjob}> 
-           <FlatList
-            
+        <View style={styles.listjob}>
+          <FlatList
+
             data={this.getWordList()}
             renderItem={({ item }) => <JobListItems
-             idAction={item.Oder_detail_id}
-             id={item.Order}
-             time={item.Odertime}
-             status={item.status}
-             onPress={() => this.props.navigation.navigate('JobDetail',{detail:item,id:item.Oder_detail_id})}       
-              />}
-            keyExtractor={item =>item.Oder_detail_id}
-      />
-         </View>
-         <Filter/>
-      
+            Oder_detail_id={item.Oder_detail_id}
+              id={item.Order}
+              time={item.Odertime}
+              status={item.status}
+              onPress={() => this.props.navigation.navigate('JobDetail', { detail: item, id: item.Oder_detail_id })}
+            />}
+            keyExtractor={item => item.Oder_detail_id}
+          />
+        </View>
+        <Filter />
+
       </View>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return { 
-      myData: state.dataFake,
-      btnStatus: state.filterStatus
+  return {
+    myData: state.DataJob.Job,
+    btnStatus: state.filterStatus
   };
 }
 export default connect(mapStateToProps)(JobList);
@@ -89,8 +88,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
     padding: 8,
   },
-  listjob:{
-    flex:10,
+  listjob: {
+    flex: 10,
   },
-  
+
 });

@@ -12,6 +12,21 @@ const JobReducers = (state = defaultState, action) => {
             return {Job:action.receivedJob, error:false,isLoading:false};
         case 'FETCH_FAILED':
             return {Job:[], error:true,isLoading:false};
+        case 'STARTJOB':
+            // console.log('#JobReducer', state)
+            state.Job.map (e => {
+                // console.log('#jobReducer loop e = ', e.Oder_id);
+                e.oder_detail.map (e1 => {
+                    // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+                    if (e1.Oder_detail_id === action.order_detail_id){
+                        e1.status = "PROCESSING"
+                    }
+                })
+            })
+            //console.log(state);
+
+
+            // return 'PROCESSING';
         
         default:
             return state; //state does not change
