@@ -85,8 +85,12 @@ class JobDetail extends React.Component {
 
   }
   _onStartJob = async () => {
-    const { id } = this.props.navigation.state.params;
-    let stateJob = this.props.stateJob;
+    //const { id } = this.props.navigation.state.params;
+    //let stateJob = this.props.stateJob;
+
+    const { params } = this.props.navigation.state;
+    const order_detail_item = params.Oder_detail_item;
+
     Alert.alert(
       'Đồng ý! Bắt đầu công việc',
       '',
@@ -97,7 +101,7 @@ class JobDetail extends React.Component {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => this.props.START(id, stateJob) },
+        { text: 'OK', onPress: () => this.props.START(order_detail_item) },
       ],
       { cancelable: false },
     );
@@ -265,53 +269,50 @@ class JobDetail extends React.Component {
   render() {
 
     const { params } = this.props.navigation.state;
-    const dataget = params.detail;
-    const id = params.detail.Oder_detail_id;
-    console.log('ID get from job list:', id);
+    const oder_detail_item = params.Oder_detail_item;
+    const oder_detail_id = oder_detail_item.Oder_detail_id;
+
+    console.log('ID get from job list:', oder_detail_id);
     let mainView = (params && params.isSaving == true) ? <ActivityIndicator /> :
       <View style={styles.wrapper}>
 
         <View style={styles.content}>
           <View style={styles.contentdetail}>
             <Text style={styles.oder_infor}>Đơn Hàng:</Text>
-            <Text style={styles.oder_infor}>{dataget.Order}</Text>
+            <Text style={styles.oder_infor}>{oder_detail_item.Order}</Text>
           </View>
           <View style={styles.contentdetail}>
             <Text style={styles.oder_infor}>Tên Khách Hàng:</Text>
-            <Text style={styles.oder_infor}>{dataget.namecustom}</Text>
+            <Text style={styles.oder_infor}>{oder_detail_item.namecustom}</Text>
           </View>
           <View style={styles.contentdetail}>
             <Text style={styles.oder_infor}>Số điện thoại liên hệ:</Text>
-            <Text style={styles.oder_infor}>{dataget.SĐT}</Text>
+            <Text style={styles.oder_infor}>{oder_detail_item.SĐT}</Text>
           </View>
           <View style={styles.address}>
             <Text style={styles.oder_infor}>Địa chỉ giao Hàng:</Text>
-            <Text style={styles.oder_infor}>{dataget.address}</Text>
+            <Text style={styles.oder_infor}>{oder_detail_item.address}</Text>
           </View>
           <View style={styles.contentdetail}>
             <Text style={styles.oder_infor}>Trạng thái thanh toán</Text>
-            <Text style={styles.oder_infor}>{dataget.thanhtoan}</Text>
+            <Text style={styles.oder_infor}>{oder_detail_item.thanhtoan}</Text>
           </View>
           <View style={styles.controlStyle}>
             <TouchableOpacity style={styles.signInStyle}
-              onPress={() => this.props.navigation.navigate('EventComponent', { id: id })}>
+              onPress={() => this.props.navigation.navigate('EventComponent', { id: oder_detail_id })}>
               <Text style={styles.activeStyle}>Sự Kiện</Text>
 
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.signUpStyle}
-              disabled={
-                (this.props.stateJob === 'PROCESSING') ? true :
-                  (this.props.id !== this.props.actionID) & (this.props.stateJob === 'COMPLETED') ? false :
-                    (this.props.id === this.props.actionID) & (this.props.stateOder === 'COMPLETED') ? true : false
-              }
+              // disabled={
+              //   (this.props.stateJob === 'PROCESSING') ? true :
+              //     (this.props.id !== this.props.actionID) & (this.props.stateJob === 'COMPLETED') ? false :
+              //       (this.props.id === this.props.actionID) & (this.props.stateOder === 'COMPLETED') ? true : false
+              // }
               onPress={() => { this._onStartJob() }} >
               <Text style={styles.activeStyle}>{
-                (this.props.id === this.props.actionID) ? this.props.stateJob :
-                  (this.props.id !== this.props.actionID) & (this.props.stateOder === 'COMPLETED') ? 'START' :
-                    (this.props.id === this.props.actionID) & (this.props.stateOder === 'COMPLETED') ? this.props.stateOder :
-                      this.props.stateJob
-
+                (oder_detail_item.status === 'INACTIVE') ? 'START' : 'PROCESSING'
               }</Text>
             </TouchableOpacity>
           </View>

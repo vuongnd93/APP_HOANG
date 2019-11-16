@@ -21,31 +21,32 @@ class JobList extends React.Component {
 
   async componentWillMount() {
 
-    let status = await AsyncStorage.getItem('status');
-    console.log('Constructor, status = ', status);
-
-    if (status === 'PROCESSING') {
-      // PROCESSING -> btnStartEnd lable shows END
-      this.setState({
-        btnStartEndName: 'END',
-      });
-    } else {
-      // Stop -> btnStartEnd lable shows START
-      this.setState({
-        btnStartEndName: 'START',
-      });
-    }
-  }
-
-
-  getWordList() {
     const { btnStatus, myData } = this.props;
-    const { params } = this.props.navigation.state;
-    const job_Detail = params.detail;
-    if (btnStatus === 'PROCESSING') return myData.filter(e => e.status === 'PROCESSING');
-    if (btnStatus === 'COMPLETED') return myData.filter(e => e.status === 'COMPLETED');
-    return job_Detail;
+    const 
+    // const { params } = this.props.navigation.state;
+    // const oder_detail = params.oder_detail;
+    this.props.myData.map(e => {
+      // console.log('#jobReducer loop e = ', e.Oder_id);
+      e.oder_detail.map(e1 => {
+        // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+        if (e1.Oder_detail_id === oder_detail_id) {
+          status = e1.status;
+        }
+      })
+    })
   }
+
+
+  // getWordList() {
+  //   const { btnStatus, myData } = this.props;
+  //   const { params } = this.props.navigation.state;
+  //   const oder_detail = params.oder_detail;
+
+  //   const oder_detail 
+  //   if (btnStatus === 'PROCESSING') return myData.filter(e => e.status === 'PROCESSING');
+  //   if (btnStatus === 'COMPLETED') return myData.filter(e => e.status === 'COMPLETED');
+  //   return oder_detail;
+  // }
 
   render() {
 
@@ -56,11 +57,11 @@ class JobList extends React.Component {
 
             data={this.getWordList()}
             renderItem={({ item }) => <JobListItems
-            Oder_detail_id={item.Oder_detail_id}
+              Oder_detail_id={item.Oder_detail_id}
               id={item.Order}
               time={item.Odertime}
               status={item.status}
-              onPress={() => this.props.navigation.navigate('JobDetail', { detail: item, id: item.Oder_detail_id })}
+              onPress={() => this.props.navigation.navigate('JobDetail', { Oder_detail_item: item })}
             />}
             keyExtractor={item => item.Oder_detail_id}
           />

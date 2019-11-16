@@ -19,11 +19,11 @@ export function* watchFetchJob() {
 
 function* statJob(action) {
     console.log(`#Jobsagas.js This is START_JOB`);
-    console.log(action.id);
+    console.log(action.order_detail_item);
     try {
         const result = yield Api.postStartJob(action.stateJob); 
         if (result =='OK'){
-            yield put({ type: 'STARTJOB', order_detail_id: action.id});  
+            yield put({ type: 'STARTJOB', order_detail_item: action.order_detail_item});  
             yield put({ type: 'CHANGERSTATE', id:action.id});
         }        
                

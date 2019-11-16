@@ -36,20 +36,20 @@ class JobListItems extends React.Component {
   // }
   render() {
     // console.log("#JobListItems mydata = ", this.props.myData);
-    let oder_detail_id = this.props.Oder_detail_id;
-    console.log("#JobListItems oder_detail_id = ", oder_detail_id);
-    let status = ""
-    this.props.myData.map(e => {
-      // console.log('#jobReducer loop e = ', e.Oder_id);
-      e.oder_detail.map(e1 => {
-        // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
-        if (e1.Oder_detail_id === oder_detail_id) {
-          status = e1.status;
-        }
-      })
-    })
+    // let oder_detail_id = this.props.Oder_detail_id;
+    // console.log("#JobListItems oder_detail_id = ", oder_detail_id);
+    // let status = ""
+    // this.props.myData.map(e => {
+    //   // console.log('#jobReducer loop e = ', e.Oder_id);
+    //   e.oder_detail.map(e1 => {
+    //     // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+    //     if (e1.Oder_detail_id === oder_detail_id) {
+    //       status = e1.status;
+    //     }
+    //   })
+    // })
 
-    console.log("#JobListItems status = ", status);
+    // console.log("#JobListItems status = ", status);
     return (
 
       <TouchableOpacity
@@ -87,7 +87,7 @@ class JobListItems extends React.Component {
             <View style={styles.view_oder}>
               <Text style={styles.oder_id}>Trạng Thái</Text>
               <Text style={{ color: 'yellow' }}>
-                {status}
+                {this.props.status}
               </Text>
             </View>
           </View>

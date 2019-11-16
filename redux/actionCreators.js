@@ -7,8 +7,8 @@ export function INCREMENT() {
 export function DECREMENT() {
     return { type: 'DECREMENT' };
 }
-export function START(id,stateJob) {
-    return { type: 'START',id,stateJob };
+export function START(order_detail_item) {
+    return { type: 'START',order_detail_item};
 }
 export function STARTJOB() {
     return { type: 'STARTJOB' };

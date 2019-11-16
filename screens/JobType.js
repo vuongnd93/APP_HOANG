@@ -89,7 +89,7 @@ class JobType extends React.Component {
                             parentFlatList={this}
                             job={item.job}
                             id={item.Oder_id}
-                            onPress={() => this.props.navigation.navigate('JobList', { detail: item.oder_detail, })}
+                            onPress={() => this.props.navigation.navigate('JobList', { oder_detail: item.oder_detail, oder_id: item.Oder_id})}
                         />}
                         keyExtractor={item => item.Oder_id}
                         refreshControl={
