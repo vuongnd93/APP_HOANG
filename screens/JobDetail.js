@@ -47,21 +47,25 @@ class JobDetail extends React.Component {
 
 
   async componentWillMount() {
-
-    let status = await AsyncStorage.getItem('status');
-    console.log('Constructor, status = ', status);
-
-    if (status === 'PROCESSING') {
-      // PROCESSING -> btnStartEnd lable shows END
-      this.setState({
-        btnStartEndName: 'END',
-      });
-    } else {
-      // Stop -> btnStartEnd lable shows START
-      this.setState({
-        btnStartEndName: 'START',
-      });
-    }
+        const { btnStatus, myData } = this.props;
+        const { params } = this.props.navigation.state;
+        const oder_id = params.oder_id;
+        const Oder_detail_id = params.Oder_detail_id
+        const oder_detail_item = {}
+        this.props.myData.map(e => {
+          // console.log('#jobReducer loop e = ', e.Oder_id);
+          if(e.Oder_id===oder_id){
+              e.oder_detail.map(e1 => {
+                // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+                if (e1.Oder_detail_id === oder_detail_id) {
+                  oder_detail_item = e1;
+                }
+              })
+              
+          }
+          
+        })
+    
   }
   componentDidMount() {
     this.props.navigation.setParams({ onsave: this._onsave.bind(this), isSaving: false });
@@ -269,10 +273,10 @@ class JobDetail extends React.Component {
   render() {
 
     const { params } = this.props.navigation.state;
-    const oder_detail_item = params.Oder_detail_item;
-    const oder_detail_id = oder_detail_item.Oder_detail_id;
+    // const oder_detail_item = params.Oder_detail_item;
+    // const oder_detail_id = oder_detail_item.Oder_detail_id;
 
-    console.log('ID get from job list:', oder_detail_id);
+    // console.log('ID get from job list:', oder_detail_id);
     let mainView = (params && params.isSaving == true) ? <ActivityIndicator /> :
       <View style={styles.wrapper}>
 
@@ -347,7 +351,7 @@ class JobDetail extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    myData: state.dataFake,
+    myData: state.DataJob.Job,
     btnStatus: state.filterStatus,
     stateOder: state.stateOder.stateOder,
     actionID: state.stateOder.idOder,

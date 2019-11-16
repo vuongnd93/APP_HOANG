@@ -21,35 +21,52 @@ class JobList extends React.Component {
 
   async componentWillMount() {
 
-    const { btnStatus, myData } = this.props;
-    const 
+    // const { btnStatus, myData } = this.props;
     // const { params } = this.props.navigation.state;
-    // const oder_detail = params.oder_detail;
-    this.props.myData.map(e => {
-      // console.log('#jobReducer loop e = ', e.Oder_id);
-      e.oder_detail.map(e1 => {
-        // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
-        if (e1.Oder_detail_id === oder_detail_id) {
-          status = e1.status;
-        }
-      })
-    })
+    // const oder_id = params.oder_id;
+    // const oder_detail=[];
+    // this.props.myData.map(e => {
+    //   // console.log('#jobReducer loop e = ', e.Oder_id);
+    //   if(e.Oder_id===oder_id){
+    //       // e.oder_detail.map(e1 => {
+    //       //   // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+    //       //   if (e1.Oder_detail_id === oder_detail_id) {
+    //       //     status = e1.status;
+    //       //   }
+    //       // })
+    //       this.props.oder_detail=e.oder_detail;
+    //   }
+      
+    // })
   }
 
 
-  // getWordList() {
-  //   const { btnStatus, myData } = this.props;
-  //   const { params } = this.props.navigation.state;
-  //   const oder_detail = params.oder_detail;
-
-  //   const oder_detail 
-  //   if (btnStatus === 'PROCESSING') return myData.filter(e => e.status === 'PROCESSING');
-  //   if (btnStatus === 'COMPLETED') return myData.filter(e => e.status === 'COMPLETED');
-  //   return oder_detail;
-  // }
+  getWordList() {
+      const { btnStatus, myData } = this.props;
+      const { params } = this.props.navigation.state;
+      const oder_id = params.oder_id;
+      // const oder_detail=[];
+      this.props.myData.map(e => {
+        // console.log('#jobReducer loop e = ', e.Oder_id);
+        if(e.Oder_id===oder_id){
+            // e.oder_detail.map(e1 => {
+            //   // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+            //   if (e1.Oder_detail_id === oder_detail_id) {
+            //     status = e1.status;
+            //   }
+            // })
+            // oder_detail=e.oder_detail;
+            return e.oder_detail;
+            // break;
+        }
+        
+      })
+      return oder_detail;
+  }
 
   render() {
-
+    const { params } = this.props.navigation.state;
+    const oder_id = params.oder_id;
     return (
       <View style={styles.container}>
         <View style={styles.listjob}>
@@ -61,7 +78,7 @@ class JobList extends React.Component {
               id={item.Order}
               time={item.Odertime}
               status={item.status}
-              onPress={() => this.props.navigation.navigate('JobDetail', { Oder_detail_item: item })}
+              onPress={() => this.props.navigation.navigate('JobDetail', { oder_id:oder_id,Oder_detail_id:item.Oder_detail_id })}
             />}
             keyExtractor={item => item.Oder_detail_id}
           />
@@ -76,7 +93,8 @@ class JobList extends React.Component {
 function mapStateToProps(state) {
   return {
     myData: state.DataJob.Job,
-    btnStatus: state.filterStatus
+    btnStatus: state.filterStatus,
+    // oder_detail=[]
   };
 }
 export default connect(mapStateToProps)(JobList);

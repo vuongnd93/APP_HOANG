@@ -25,7 +25,7 @@ const JobReducers = (state = defaultState, action) => {
             // })
             
             action.order_detail_item.status = "PROCESSING";
-            console.log('#JobReducer', state)
+            // console.log('#JobReducer', state)
             return state;
             // return action.order_detail_item;
             // return {...action.order_detail_item, status: 'PROCESSING'}
