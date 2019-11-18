@@ -7,8 +7,8 @@ export function INCREMENT() {
 export function DECREMENT() {
     return { type: 'DECREMENT' };
 }
-export function START(order_detail_item) {
-    return { type: 'START',order_detail_item};
+export function START(Oder_detail_id,oder_state,order_detail_item) {
+    return { type: 'START',Oder_detail_id,oder_state,order_detail_item};
 }
 export function STARTJOB() {
     return { type: 'STARTJOB' };
@@ -16,8 +16,8 @@ export function STARTJOB() {
 export function COMPLETEDJOB() {
     return { type: 'COMPLETEDJOB' };
 }
-export function COMPLETED(idOder) {
-    return { type: 'COMPLETED',idOder };
+export function COMPLETED(oder_detail_id,stateJob) {
+    return { type: 'COMPLETED',oder_detail_id,stateJob };
 }
 export function ToggleBtn(id) {
     return { 

@@ -21,7 +21,7 @@ class JobDetail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      btnStartJob: 'START',
+      myData: '',
 
     }
     this._onPressAdd = this._onPressAdd.bind(this);
@@ -46,26 +46,22 @@ class JobDetail extends React.Component {
   };
 
 
-  async componentWillMount() {
-        const { btnStatus, myData } = this.props;
-        const { params } = this.props.navigation.state;
-        const oder_id = params.oder_id;
-        const Oder_detail_id = params.Oder_detail_id
-        const oder_detail_item = {}
-        this.props.myData.map(e => {
-          // console.log('#jobReducer loop e = ', e.Oder_id);
-          if(e.Oder_id===oder_id){
-              e.oder_detail.map(e1 => {
-                // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
-                if (e1.Oder_detail_id === oder_detail_id) {
-                  oder_detail_item = e1;
-                }
-              })
-              
-          }
-          
-        })
-    
+   componentWillMount() {
+  //  const { params } = this.props.navigation.state;
+  //   const oder_detail_id = params.oder_detail_id;
+    const { stateJob, myData } = this.props;
+    console.log('status tesst',stateJob)
+  //   let status= "";
+  //      myData.map(e=>{
+  //       e.oder_detail.map(e1=>{
+  //         if(e1.Oder_detail_id==oder_detail_id){
+  //              status=e1.status 
+  //         }              
+  //       });     
+  //     });
+    this.forceUpdate()
+    console.log('#jobdetail: status_curent:');
+ 
   }
   componentDidMount() {
     this.props.navigation.setParams({ onsave: this._onsave.bind(this), isSaving: false });
@@ -93,7 +89,9 @@ class JobDetail extends React.Component {
     //let stateJob = this.props.stateJob;
 
     const { params } = this.props.navigation.state;
-    const order_detail_item = params.Oder_detail_item;
+    const order_detail_item = params.item;
+    const Oder_detail_id= params.item.Oder_detail_id;
+    const oder_state='START'
 
     Alert.alert(
       'Đồng ý! Bắt đầu công việc',
@@ -105,7 +103,7 @@ class JobDetail extends React.Component {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => this.props.START(order_detail_item) },
+        { text: 'OK', onPress: () => this.props.START(Oder_detail_id,oder_state) },
       ],
       { cancelable: false },
     );
@@ -269,15 +267,43 @@ class JobDetail extends React.Component {
   _onPressAdd() {
     this.refs.addModal.showAddModal();
   }
+  // onStatusOder(){
+  //   const { params } = this.props.navigation.state;
+  //   const oder_detail_item = params.oder_detail_id;
+  //   // const { btnStatus, myData } = this.state.myData;
+  //   const myData=this.state.myData;
+  //  let status= "";
+  //      myData.map(e=>{
+  //       e.oder_detail.map(e1=>{
+  //         if(e1.Oder_detail_id==oder_detail_item){
+  //              status=e1.status 
+  //         }              
+  //       });     
+  //     });
+  //     console.log('#jobDetatil.e1.status',status);
+  //     return status
+     
+  // }
 
   render() {
 
     const { params } = this.props.navigation.state;
-    // const oder_detail_item = params.Oder_detail_item;
-    // const oder_detail_id = oder_detail_item.Oder_detail_id;
-
-    // console.log('ID get from job list:', oder_detail_id);
-    let mainView = (params && params.isSaving == true) ? <ActivityIndicator /> :
+    const oder_detail_item = params.item;
+    // const { params } = this.props.navigation.state;
+    let oder_detail_id = params.oder_detail_id;
+    // const { btnStatus, myData } = this.state.myData;
+    let myData=this.props.myData;
+   let status= "";
+       myData.map(e=>{
+        e.oder_detail.map(e1=>{
+          if(e1.Oder_detail_id==oder_detail_id){
+               status=e1.status 
+          }              
+        });     
+      });
+    // console.log('#jobdetail: status_curent:',status);
+    // let mainView = (params && params.isSaving == true) ? <ActivityIndicator /> :
+    return (
       <View style={styles.wrapper}>
 
         <View style={styles.content}>
@@ -303,20 +329,22 @@ class JobDetail extends React.Component {
           </View>
           <View style={styles.controlStyle}>
             <TouchableOpacity style={styles.signInStyle}
-              onPress={() => this.props.navigation.navigate('EventComponent', { id: oder_detail_id })}>
+              onPress={() => this.props.navigation.navigate('EventComponent', { oder_detail_id:oder_detail_item.Oder_detail_id })}>
               <Text style={styles.activeStyle}>Sự Kiện</Text>
 
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.signUpStyle}
-              // disabled={
-              //   (this.props.stateJob === 'PROCESSING') ? true :
-              //     (this.props.id !== this.props.actionID) & (this.props.stateJob === 'COMPLETED') ? false :
-              //       (this.props.id === this.props.actionID) & (this.props.stateOder === 'COMPLETED') ? true : false
-              // }
+              disabled={
+                (status==='INACTIVE')?false:
+                (status==='PROCESSING')|(status==='COMPLETED')?true:false
+                
+               }
               onPress={() => { this._onStartJob() }} >
               <Text style={styles.activeStyle}>{
-                (oder_detail_item.status === 'INACTIVE') ? 'START' : 'PROCESSING'
+                (status === 'INACTIVE') ? 'START' :
+                (status === 'PROCESSING')?'PROCESSING':'COMPLETED'
+                // (status === 'COMPLETED'?'COMPLETED'
               }</Text>
             </TouchableOpacity>
           </View>
@@ -338,13 +366,14 @@ class JobDetail extends React.Component {
         </View>
 
       </View>
-
-    return (
-      mainView
-      //  <AddModal ref={'addModal'}>
-
-      //  </AddModal>                                                      
     )
+
+    // return (
+    //   mainView
+    //   //  <AddModal ref={'addModal'}>
+
+    //   //  </AddModal>                                                      
+    // )
   }
 }
 

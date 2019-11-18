@@ -37,9 +37,9 @@ import backSpecial from '../assets/buy_plus.png';
 
 _onCompletedJob = async ()=>{
   const {params}= this.props.navigation.state;
-   idOder = params.id
-  console.log(idOder);
-  let stateJob= this.props.stateJob;
+  oder_detail_id = params.oder_detail_id
+  // console.log(oder_detail_id);
+  let stateJob= 'COMPLETED';
   Alert.alert(
     'Đồng ý! Hoàn thành Công việc',
     '',
@@ -50,7 +50,7 @@ _onCompletedJob = async ()=>{
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () =>this.props.COMPLETED(idOder,stateJob)},
+      {text: 'OK', onPress: () =>this.props.COMPLETED(oder_detail_id,stateJob)},
     ],
     {cancelable: false},
   );
@@ -77,7 +77,20 @@ _onCompletedJob = async ()=>{
 
 
   render() {
-    console.log(this.props.stateJob);
+    const { params } = this.props.navigation.state;
+    const oder_detail_id = params.oder_detail_id;
+    // const { params } = this.props.navigation.state;
+    // let oder_detail_id = params.oder_detail_id;
+    // const { btnStatus, myData } = this.state.myData;
+    let myData=this.props.myData;
+   let status= "";
+       myData.map(e=>{
+        e.oder_detail.map(e1=>{
+          if(e1.Oder_detail_id==oder_detail_id){
+               status=e1.status 
+          }              
+        });     
+      });
     return (
      <View style={styles.container} >
         <View style={styles.header} >
@@ -99,7 +112,10 @@ _onCompletedJob = async ()=>{
          {/* <View style={styles.acidentDetail} >           */}
             <View  style={styles.sukien_buttom}> 
               <TouchableOpacity style={styles.endjob}
-               disabled={this.props.stateJob==='PROCESSING'?false:true}
+                disabled={
+                  (status==='INACTIVE')|(status==='COMPLETED')?true:
+                  (status==='PROCESSING')?false:false                 
+                 }
                onPress={() => {this._onCompletedJob()}}   >      
                      <Text style={styles.sukien_text}>Completed</Text>                    
               </TouchableOpacity >
@@ -114,8 +130,10 @@ _onCompletedJob = async ()=>{
 
 function mapStateToProps(state) {
   return {
-    myData: state.dataFake,
+    myData: state.DataJob.Job,
     btnStatus: state.filterStatus,
+    stateOder: state.stateOder.stateOder,
+    actionID: state.stateOder.idOder,
     stateJob: state.StartJob
    };
 }

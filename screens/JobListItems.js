@@ -25,49 +25,70 @@ class JobListItems extends React.Component {
       title: 'List công việc'
     }
   };
-
-
-  // setStateJob(){
-  //   if(this.props.idAction!==this.props.actionID){
-  //     return false
-  //   }else if(this.props.actionID==''){return true}
-
-  // else{return true }
+  componentWillMount() {
+    // const { params } = this.props.navigation.state;
+    //  const oder_detail_id = params.oder_detail_id;
+    //  const { btnStatus, myData } = this.props;
+    //  let status= "";
+    //     myData.map(e=>{
+    //      e.oder_detail.map(e1=>{
+    //        if(e1.Oder_detail_id==oder_detail_id){
+    //             status=e1.status 
+    //        }              
+    //      });     
+    //    });
+    //  console.log('#jobdetail: status_curent:',status);
+  
+   }
+  // onStatusOder(){
+  //   const { btnStatus, myData } = this.props;
+  //   const Oder_detail_id =this.props.Oder_detail_id
+  //  let status= "";
+  //      myData.map(e=>{
+  //       e.oder_detail.map(e1=>{
+  //         if(e1.Oder_detail_id==Oder_detail_id){
+  //           status=e1.status 
+  //          }         
+  //       });     
+  //     });
+  //     console.log('#joblistitem.e1.status',status);
+  //     return status
+     
   // }
-  render() {
-    // console.log("#JobListItems mydata = ", this.props.myData);
-    // let oder_detail_id = this.props.Oder_detail_id;
-    // console.log("#JobListItems oder_detail_id = ", oder_detail_id);
-    // let status = ""
-    // this.props.myData.map(e => {
-    //   // console.log('#jobReducer loop e = ', e.Oder_id);
-    //   e.oder_detail.map(e1 => {
-    //     // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
-    //     if (e1.Oder_detail_id === oder_detail_id) {
-    //       status = e1.status;
-    //     }
-    //   })
-    // })
 
-    // console.log("#JobListItems status = ", status);
+  render() {
+    const { btnStatus, myData } = this.props;
+    const Oder_detail_id =this.props.Oder_detail_id
+     let status= "";
+    //  let oder_state="";
+       myData.map(e=>{
+        e.oder_detail.map(e1=>{
+          if(e1.Oder_detail_id==Oder_detail_id){
+            status=e1.status; 
+           }         
+        });     
+      });
     return (
 
       <TouchableOpacity
-        // disabled={
-        // (this.props.idAction===this.props.actionID)&(this.props.stateOder==='PROCESSING')|(this.props.actionID==='')?false:
-        // (this.props.idAction===this.props.actionID)&(this.props.stateOder==='COMPLETED')?true:
-        // (this.props.idAction!==this.props.actionID)&(this.props.stateOder==='COMPLETED')?false:true
-        // }
+        disabled={
+         (status==='INACTIVE')&(this.props.stateOder==='INACTIVE')?false:
+         (status==='INACTIVE')&(this.props.stateOder==='ACTIVE')?true:
+         (status==='COMPLETED')?true: false   
+        }
         onPress={this.props.onPress}>
-
         <View
           style={{
             flexDirection: 'row',
             backgroundColor:
-              (this.props.idAction === this.props.actionID) & (this.props.stateOder === 'PROCESSING') | (this.props.actionID === '') ? '#DD3C6E' :
-                (this.props.idAction === this.props.actionID) & (this.props.stateOder === 'COMPLETED') ? '#808080' :
-                  (this.props.idAction !== this.props.actionID) & (this.props.stateOder === 'COMPLETED') ? '#DD3C6E' : '#808080'
-            ,
+            (status==='PROCESSING')?'#DD3C6E':
+            (status==='COMPLETED')&(this.props.stateOder==='ACTIVE')?'#808080': 
+            (status==='INACTIVE')&(this.props.stateOder==='INACTIVE')?'#DD3C6E':
+            (status==='INACTIVE')&(this.props.stateOder==='ACTIVE')?'#808080':
+            (status==='PROCESSING')|(this.props.stateOder==='ACTIVE')?'#DD3C6E':
+            (status==='INACTIVE')&(this.props.stateOder==='COMPLETED')?'#DD3C6E':
+            (status==='COMPLETED')?'#808080':'#808080'         
+       ,
             // backgroundColor: '#DD3C6E',
             marginHorizontal: 10,
             marginTop: 10,
@@ -87,16 +108,16 @@ class JobListItems extends React.Component {
             <View style={styles.view_oder}>
               <Text style={styles.oder_id}>Trạng Thái</Text>
               <Text style={{ color: 'yellow' }}>
-                {this.props.status}
+                {status}
               </Text>
             </View>
           </View>
           <TouchableOpacity
-            // disabled={
-            //   (this.props.idAction===this.props.actionID)&(this.props.stateOder==='PROCESSING')|(this.props.actionID==='')?false:
-            //   (this.props.idAction===this.props.actionID)&(this.props.stateOder==='COMPLETED')?true:
-            //   (this.props.idAction!==this.props.actionID)&(this.props.stateOder==='COMPLETED')?false:true
-            // }
+             disabled={
+              (status==='INACTIVE')&(this.props.stateOder==='INACTIVE')?false:
+              (status==='INACTIVE')&(this.props.stateOder==='ACTIVE')?true:
+              (status==='COMPLETED')?true: false   
+             }
             onPress={this.props.onPress} >
             <Image source={backSpecial} style={{ width: 20, height: 20, marginVertical: 20 }} />
           </TouchableOpacity>

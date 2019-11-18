@@ -9,7 +9,7 @@ class JobList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      datas: [],
+      myData: '',
     }
   }
 
@@ -19,66 +19,65 @@ class JobList extends React.Component {
     }
   };
 
-  async componentWillMount() {
-
-    // const { btnStatus, myData } = this.props;
+  componentWillMount() {
+    console.log('#jobList.status_current')
     // const { params } = this.props.navigation.state;
-    // const oder_id = params.oder_id;
-    // const oder_detail=[];
-    // this.props.myData.map(e => {
-    //   // console.log('#jobReducer loop e = ', e.Oder_id);
-    //   if(e.Oder_id===oder_id){
-    //       // e.oder_detail.map(e1 => {
-    //       //   // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
-    //       //   if (e1.Oder_detail_id === oder_detail_id) {
-    //       //     status = e1.status;
-    //       //   }
-    //       // })
-    //       this.props.oder_detail=e.oder_detail;
-    //   }
-      
-    // })
-  }
+    //  const oder_detail_id = params.oder_detail_id;
+    //  const { btnStatus, myData } = this.props;
+    //  let status= "";
+    //     myData.map(e=>{
+    //      e.oder_detail.map(e1=>{
+    //        if(e1.Oder_detail_id==oder_detail_id){
+    //             status=e1.status 
+    //        }              
+    //      });     
+    //    });
+    //  console.log('#joblist: status_curent:',status);
+  
+   }
 
 
-  getWordList() {
-      const { btnStatus, myData } = this.props;
-      const { params } = this.props.navigation.state;
-      const oder_id = params.oder_id;
-      // const oder_detail=[];
-      this.props.myData.map(e => {
-        // console.log('#jobReducer loop e = ', e.Oder_id);
-        if(e.Oder_id===oder_id){
-            // e.oder_detail.map(e1 => {
-            //   // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
-            //   if (e1.Oder_detail_id === oder_detail_id) {
-            //     status = e1.status;
-            //   }
-            // })
-            // oder_detail=e.oder_detail;
-            return e.oder_detail;
-            // break;
-        }
-        
-      })
-      return oder_detail;
-  }
+  // getWordList() {
+  //     // const { btnStatus, myData } = this.props;
+  //    let myData = this.state.myData;
+  //     let { params } = this.props.navigation.state;
+  //     let job_id = params.job_id;
+  //     //  const job_id = this.state.job_id;
+  //     // const oder_detail=params.oder_detail
+  //     let oder_detail= "";
+  //      myData.map(e=>{
+  //        if(e.Oder_id==job_id){
+  //         oder_detail=e.oder_detail;
+  //        }
+  //     });
+  //     // console.log('#joblistitem.e1.status',status);
+  //     // return status
+  //     return oder_detail       
+  // }
 
   render() {
     const { params } = this.props.navigation.state;
-    const oder_id = params.oder_id;
+    let job_id = params.job_id;
+    let myData = this.props.myData;
+    let oder_detail= "";
+       myData.map(e=>{
+         if(e.Oder_id==job_id){
+          oder_detail=e.oder_detail;
+         }
+      });
+    // const job_id = this.state.job_id
     return (
       <View style={styles.container}>
         <View style={styles.listjob}>
           <FlatList
 
-            data={this.getWordList()}
+            data={oder_detail}
             renderItem={({ item }) => <JobListItems
               Oder_detail_id={item.Oder_detail_id}
               id={item.Order}
               time={item.Odertime}
               status={item.status}
-              onPress={() => this.props.navigation.navigate('JobDetail', { oder_id:oder_id,Oder_detail_id:item.Oder_detail_id })}
+              onPress={() => this.props.navigation.navigate('JobDetail', { job_id:job_id,oder_detail_id:item.Oder_detail_id,item })}
             />}
             keyExtractor={item => item.Oder_detail_id}
           />

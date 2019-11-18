@@ -20,8 +20,8 @@ function* getJobTypeApi() {
     return JobType;
 }
 
-function* postStartJob(stateJob) {
-    console.log(stateJob);
+function* postStartJob(oder_state) {
+    console.log(oder_state);
     const response = yield axios(urlStartEndJob, {
         method: 'GET',
         headers: {
@@ -37,8 +37,8 @@ function* postStartJob(stateJob) {
     return JobType;
 }
 
-function* PostCompletedJob(id) {
-    console.log(id);
+function* PostCompletedJob(stateJob) {
+    console.log(stateJob);
     const response = yield axios(urlCompletedJob, {
         method: 'GET',
         headers: {

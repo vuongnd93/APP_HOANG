@@ -19,12 +19,12 @@ export function* watchFetchJob() {
 
 function* statJob(action) {
     console.log(`#Jobsagas.js This is START_JOB`);
-    console.log(action.order_detail_item);
+    console.log(action.Oder_detail_id);
     try {
-        const result = yield Api.postStartJob(action.stateJob); 
-        if (result =='OK'){
-            yield put({ type: 'STARTJOB', order_detail_item: action.order_detail_item});  
-            yield put({ type: 'CHANGERSTATE', id:action.id});
+        const result = yield Api.postStartJob(action.oder_state); 
+        if (result =='OK'){         
+            yield put({ type: 'STARTJOB', oder_action: action.Oder_detail_id,order_detail_item:action.order_detail_item});  
+            yield put({ type: 'CHANGERSTATE', oder_id_state:action.Oder_detail_id});
         }        
                
     } catch (error) {        
@@ -37,12 +37,12 @@ export function* watchStartJob() {
 
 function* CompletedJob(action) {
     console.log(`This is COMPLETED_JOB`);
-    console.log(action.idOder);
+    console.log(action.oder_detail_id);
     try {
-        const result = yield Api.postStartJob(action.idOder); 
+        const result = yield Api.postStartJob(action.stateJob); 
         if (result =='OK'){
-            yield put({ type: 'COMPLETEDJOB'});  
-            yield put({ type: 'CHANGERCOMPLETED', id:action.idOder});
+            yield put({ type: 'COMPLETEDJOB', oder_action:action.oder_detail_id});  
+            yield put({ type: 'CHANGERCOMPLETED', oder_detail_id:action.oder_detail_id});
         }        
                
     } catch (error) {        

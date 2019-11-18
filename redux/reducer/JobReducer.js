@@ -13,20 +13,35 @@ const JobReducers = (state = defaultState, action) => {
         case 'FETCH_FAILED':
             return {Job:[], error:true,isLoading:false};
         case 'STARTJOB':
-            // console.log('#JobReducer', state)
-            // state.Job.map (e => {
-            //     // console.log('#jobReducer loop e = ', e.Oder_id);
-            //     e.oder_detail.map (e1 => {
-            //         // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
-            //         if (e1.Oder_detail_id === action.order_detail_id){
-            //             e1.status = "PROCESSING"
-            //         }
-            //     })
-            // })
+            // console.log('#JobReducer', action.oder_action)
+            state.Job.map (e => {
+                // console.log('#jobReducer loop e = ', e.Oder_id);
+                e.oder_detail.map (e1 => {
+                    // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+                    if (e1.Oder_detail_id === action.oder_action){
+                        e1.status = "PROCESSING"                   
+                    }                                 
+                })              
+            })
+      
+        return state;
+        case 'COMPLETEDJOB':
+            // console.log('#JobReducer', action.oder_action)
+            state.Job.map (e => {
+                // console.log('#jobReducer loop e = ', e.Oder_id);
+                e.oder_detail.map (e1 => {
+                    // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
+                    if (e1.Oder_detail_id === action.oder_action){
+                        e1.status = "COMPLETED"                   
+                    }                                 
+                })              
+            })
+      
+        return state;
             
-            action.order_detail_item.status = "PROCESSING";
+            
             // console.log('#JobReducer', state)
-            return state;
+          
             // return action.order_detail_item;
             // return {...action.order_detail_item, status: 'PROCESSING'}
         default:
