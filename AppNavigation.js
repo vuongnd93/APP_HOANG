@@ -7,6 +7,7 @@ import JobType  from  './screens/JobType';
 import JobList  from  './screens/JobList';
 import JobDetail  from  './screens/JobDetail';
 import EventComponent  from  './screens/EventComponent';
+import EventOnGo  from  './screens/EventOnGo';
 
 
 
@@ -18,6 +19,7 @@ const MainNavigator = createStackNavigator({
     JobList: {screen :JobList },
     JobDetail: {screen: JobDetail},
     EventComponent: {screen: EventComponent },  
+    EvenOnGo: {screen: EventOnGo },
   });
   
 

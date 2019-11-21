@@ -47,26 +47,41 @@ class JobDetail extends React.Component {
 
 
    componentWillMount() {
-  //  const { params } = this.props.navigation.state;
-  //   const oder_detail_id = params.oder_detail_id;
-    const { stateJob, myData } = this.props;
-    console.log('status tesst',stateJob)
-  //   let status= "";
-  //      myData.map(e=>{
-  //       e.oder_detail.map(e1=>{
-  //         if(e1.Oder_detail_id==oder_detail_id){
-  //              status=e1.status 
-  //         }              
-  //       });     
-  //     });
-    this.forceUpdate()
-    console.log('#jobdetail: status_curent:');
+    // if(this._getStatusOder()==='PROCESSING'){
+    //   setInterval(() => {
+    //    console.log('put location to server');
+    //   }, 3000);
+    // }
+   
  
   }
   componentDidMount() {
     this.props.navigation.setParams({ onsave: this._onsave.bind(this), isSaving: false });
   }
 
+  clearAsyncStorage = async() => {
+    AsyncStorage.clear();
+}
+  _getStatusOder(){
+    const { params } = this.props.navigation.state;
+    // const oder_detail_item = params.item;  
+    let oder_detail_id = params.oder_detail_id;
+    let myData=this.props.myData;
+   let status= "";
+       myData.map(e=>{
+        e.oder_detail.map(e1=>{
+          if(e1.Oder_detail_id==oder_detail_id){
+               status=e1.status 
+          }              
+        });     
+      });
+    return status;
+  }
+  _onPutLocation(){
+    setInterval(() => {
+      console.log('put location to server');
+     }, 3000);
+  }
   _onsave() {
     //  console.log('save success');
 
@@ -84,15 +99,15 @@ class JobDetail extends React.Component {
     }, 3000);
 
   }
-  _onStartJob = async () => {
-    //const { id } = this.props.navigation.state.params;
-    //let stateJob = this.props.stateJob;
-
+  _onStartOK(){
     const { params } = this.props.navigation.state;
     const order_detail_item = params.item;
     const Oder_detail_id= params.item.Oder_detail_id;
     const oder_state='START'
-
+    this.props.START(Oder_detail_id,oder_state);
+    this._onPutLocation();
+  }
+  _onStartJob = async () => {
     Alert.alert(
       'Đồng ý! Bắt đầu công việc',
       '',
@@ -103,29 +118,10 @@ class JobDetail extends React.Component {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => this.props.START(Oder_detail_id,oder_state) },
+        { text: 'OK', onPress:() =>this._onStartOK()},
       ],
       { cancelable: false },
     );
-
-    //  this.props.START(START);
-    // try {
-    //  let status = await AsyncStorage.getItem('status');
-    //  console.log('status = ',status);
-    //  if (status ==='PROCESSING'){
-    //   await AsyncStorage.setItem('status', 'STOP');
-    //   this.setState({
-    //     btnStartEndName: 'START',
-    //   });
-    //  }else {
-    //     await AsyncStorage.setItem('status','PROCESSING');
-    //     this.setState({
-    //       btnStartEndName: 'END',
-    //     });
-    //  }
-    // } catch (error) {
-    //    console.log(error);
-    // }
   }
 
 
@@ -347,6 +343,7 @@ class JobDetail extends React.Component {
                 // (status === 'COMPLETED'?'COMPLETED'
               }</Text>
             </TouchableOpacity>
+              
           </View>
           <AddModal ref={'addModal'}>
           </AddModal>
@@ -362,6 +359,11 @@ class JobDetail extends React.Component {
           <TouchableOpacity style={styles.bigButton} onPress={this._takePhoto} >
             <Text style={styles.buttonText}>Take_photo</Text>
           </TouchableOpacity>
+
+          {/* <TouchableOpacity style={styles.bigButton} onPress={this.clearAsyncStorage} >
+                <Text style={styles.buttonText}>Test_clear_cache</Text>
+           </TouchableOpacity> */}
+          
 
         </View>
 

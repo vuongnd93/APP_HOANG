@@ -23,7 +23,7 @@ function* statJob(action) {
     try {
         const result = yield Api.postStartJob(action.oder_state); 
         if (result =='OK'){         
-            yield put({ type: 'STARTJOB', oder_action: action.Oder_detail_id,order_detail_item:action.order_detail_item});  
+            yield put({ type: 'STARTJOB', oder_action: action.Oder_detail_id});  
             yield put({ type: 'CHANGERSTATE', oder_id_state:action.Oder_detail_id});
         }        
                

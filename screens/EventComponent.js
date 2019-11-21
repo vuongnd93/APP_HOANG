@@ -19,6 +19,11 @@ import backSpecial from '../assets/buy_plus.png';
       this._onPressAdd = this._onPressAdd.bind(this); 
       this._onAddForm =  this._onAddForm.bind(this); 
     }
+    static navigationOptions = ({ navigation }) => {
+      return {
+        title: 'Event'
+      }
+    };
    _onAddForm(){
     if(this.state.isAdding ===false){
       this.setState({
@@ -78,6 +83,7 @@ _onCompletedJob = async ()=>{
 
   render() {
     const { params } = this.props.navigation.state;
+    const {navigate} = this.props.navigation;
     const oder_detail_id = params.oder_detail_id;
     // const { params } = this.props.navigation.state;
     // let oder_detail_id = params.oder_detail_id;
@@ -99,13 +105,15 @@ _onCompletedJob = async ()=>{
 
          <View style={styles.acident} >
               <Text style={styles.option_text}>Chọn sự kiện</Text>
-            <TouchableOpacity style={styles.option}>
+            <TouchableOpacity style={styles.option} 
+            //  onPress={()=>this.props.navigation.navigate('EvenOnGo')}
+            >
                 <Text style={styles.text}>Tất cả sự kiện</Text>
                 <TouchableOpacity onPress={this._onAddForm} >
                     <Image source={backSpecial} style={{ width: 30, height: 30 }}/>
-                </TouchableOpacity >
+                </TouchableOpacity>
             </TouchableOpacity>
-            {this.state.isAdding ? <Form/> : null}
+            {this.state.isAdding ? <Form onPress={()=>this.props.navigation.navigate('EvenOnGo')}/> : null}
         </View>
       
       

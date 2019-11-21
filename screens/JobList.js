@@ -35,7 +35,21 @@ class JobList extends React.Component {
     //  console.log('#joblist: status_curent:',status);
   
    }
-
+  get_Oder_Detail(){
+       const { params } = this.props.navigation.state;
+    let job_id = params.job_id;
+    let myData = this.props.myData;
+    let btnStatus=this.props.btnStatus;
+    let oder_detail= "";
+       myData.map(e=>{
+         if(e.Oder_id==job_id){
+          oder_detail=e.oder_detail;
+         }
+      });
+      if (btnStatus === 'PROCESSING') return oder_detail.filter(e => e.status === 'PROCESSING');
+      if (btnStatus === 'COMPLETED') return oder_detail.filter(e => e.status === 'COMPLETED');
+    return oder_detail;
+  }
 
   // getWordList() {
   //     // const { btnStatus, myData } = this.props;
@@ -58,20 +72,20 @@ class JobList extends React.Component {
   render() {
     const { params } = this.props.navigation.state;
     let job_id = params.job_id;
-    let myData = this.props.myData;
-    let oder_detail= "";
-       myData.map(e=>{
-         if(e.Oder_id==job_id){
-          oder_detail=e.oder_detail;
-         }
-      });
+    // let myData = this.props.myData;
+    // let oder_detail= "";
+    //    myData.map(e=>{
+    //      if(e.Oder_id==job_id){
+    //       oder_detail=e.oder_detail;
+    //      }
+    //   });
     // const job_id = this.state.job_id
     return (
       <View style={styles.container}>
         <View style={styles.listjob}>
           <FlatList
 
-            data={oder_detail}
+            data={this.get_Oder_Detail()}
             renderItem={({ item }) => <JobListItems
               Oder_detail_id={item.Oder_detail_id}
               id={item.Order}

@@ -23,7 +23,11 @@ class Form extends Component {
         this._onPressAdd = this._onPressAdd.bind(this); 
         // this._onPressAdd = this._onPressAdd.bind(this); 
     }
-
+    // static navigationOptions = ({ navigation }) => {
+    //     return {
+    //       title: 'Công việc'
+    //     }
+    //   };
 
     // onAdd() {
     //     const { en, vn } = this.state;
@@ -46,6 +50,7 @@ class Form extends Component {
         console.log(this.state.one)
     }
     render() {
+        // const {navigate} = this.props.navigate;
         return (
             
             <View style={styles.container}>   
@@ -53,7 +58,9 @@ class Form extends Component {
                  </AddModal>     
                 <View style={styles.wrapp_checkbox}>
                     <View style={styles.wrapp_event}>
-                        <TouchableOpacity style={styles.click_event} onPress={this._onPressAdd}>
+                        <TouchableOpacity style={styles.click_event}
+                            onPress={this.props.onPress}
+                         >
                             <Text>Trên Đường Đi</Text> 
                             <Image source={Transport} style={{ width: 30, height: 30 }}/>                                                                              
                         </TouchableOpacity>
@@ -69,7 +76,9 @@ class Form extends Component {
                     </View>
 
                     <View style={styles.wrapp_event}>
-                        <TouchableOpacity style={styles.click_event} onPress={this._onPressAdd}>
+                        <TouchableOpacity style={styles.click_event}
+                        // onPress={() => this.props.navigator.navigation.navigate('JobDetail')}
+                            >
                             <Text>Bốc Dỡ Hàng</Text> 
                             <Image source={Lapdat} style={{ width: 30, height: 30 }}/>                                                                              
                         </TouchableOpacity>

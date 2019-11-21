@@ -66,19 +66,19 @@ export default class AddModal extends Component {
                     fontWeight: 'bold',
                     textAlign: 'center',
                     marginTop: 5
-                }}>Sự cố trên đường đi</Text>
+                }}>Thanh Toán</Text>
                 <CheckBox
-                    title='Tai nạn'
+                    title='Đã Thanh Toán'
                     checked={this.state.one}
                     onPress={()=>this._onCheck()}
                 />
                  <CheckBox
-                    title='Công an bắt'
+                    title='Nhận Thưởng'
                     checked={this.state.two}
                     onPress={()=>this._onCheck()}
                  />
                  <CheckBox
-                    title='Đổ Xăng'
+                    title='Nhận Thưởng'
                     checked={this.state.three}
                     onPress={()=>this._onCheck()}
                  />
