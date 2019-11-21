@@ -34,7 +34,7 @@ class JobDetail extends React.Component {
       containerStyle={{ margin: 5, padding: 10, borderRadius: 10, backgroundColor: 'darkviolet' }}
       style={{ fontSize: 15, color: 'white' }}
       onPress={() => {
-        params.onsave();
+        // params.onsave();
       }}
     >
       save
@@ -327,7 +327,6 @@ class JobDetail extends React.Component {
             <TouchableOpacity style={styles.signInStyle}
               onPress={() => this.props.navigation.navigate('EventComponent', { oder_detail_id:oder_detail_item.Oder_detail_id })}>
               <Text style={styles.activeStyle}>Sự Kiện</Text>
-
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.signUpStyle}

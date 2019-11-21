@@ -8,6 +8,7 @@ import JobList  from  './screens/JobList';
 import JobDetail  from  './screens/JobDetail';
 import EventComponent  from  './screens/EventComponent';
 import EventOnGo  from  './screens/EventOnGo';
+import ShowMapView  from  './screens/ShowMapView';
 
 
 
@@ -20,6 +21,7 @@ const MainNavigator = createStackNavigator({
     JobDetail: {screen: JobDetail},
     EventComponent: {screen: EventComponent },  
     EvenOnGo: {screen: EventOnGo },
+    ShowMapView: {screen: ShowMapView },
   });
   
 

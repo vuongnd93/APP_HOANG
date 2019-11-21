@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
 import Constants from 'expo-constants';
+import Button from 'react-native-button';
 import { connect } from 'react-redux';
 import JobListItems from './JobListItems';
 import Filter from './Filter';
@@ -14,10 +15,22 @@ class JobList extends React.Component {
   }
 
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    let headerTitle = 'List Đơn Hàng';
+    let headerTitleStyle = { color: '#dc143c' };
+    let headerRight = (<Button
+        containerStyle={{ margin: 10, padding: 10, borderRadius: 50, backgroundColor: '#00ffff' }}
+        style={{ fontSize: 15, color: 'white' }}
+        onPress={() => {
+            // params.onsave();
+        }}
+    >
+    </Button>);
+    let headerBackTitle = 'Back';
     return {
-      title: 'Công việc'
+        headerTitle, headerTitleStyle, headerRight, headerBackTitle,
     }
-  };
+};
 
   componentWillMount() {
     console.log('#jobList.status_current')

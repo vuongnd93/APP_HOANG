@@ -1,8 +1,9 @@
 
 import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, View,
-  Alert,StyleSheet,Button,TouchableOpacity,Image} from 'react-native';
+  Alert,StyleSheet,TouchableOpacity,Image} from 'react-native';
 import AddModal from '../components/addmodal';
+import Button from 'react-native-button';
 import { connect } from 'react-redux';
 import Form from '../components/form';
 import {COMPLETED} from '../redux/actionCreators';
@@ -20,10 +21,23 @@ import backSpecial from '../assets/buy_plus.png';
       this._onAddForm =  this._onAddForm.bind(this); 
     }
     static navigationOptions = ({ navigation }) => {
+      const { params = {} } = navigation.state;
+      let headerTitle = 'Event';
+      let headerTitleStyle = { color: '#dc143c' };
+      let headerRight = (<Button
+          containerStyle={{ margin: 10, padding: 10, borderRadius: 50, backgroundColor: '#00ffff' }}
+          style={{ fontSize: 15, color: 'white' }}
+          onPress={() => {
+              // params.onsave();
+          }}
+      >
+      </Button>);
+      let headerBackTitle = 'Back';
       return {
-        title: 'Event'
+          headerTitle, headerTitleStyle, headerRight, headerBackTitle,
       }
-    };
+  };
+
    _onAddForm(){
     if(this.state.isAdding ===false){
       this.setState({

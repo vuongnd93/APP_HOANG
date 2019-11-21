@@ -278,6 +278,10 @@ class EventOnGo extends React.Component {
 
                  </View>
                  <View style={styles.area_three}>
+                      <TouchableOpacity style={styles.MapView}
+                      onPress={() => this.props.navigation.navigate('ShowMapView')} >
+                        <Text style={styles.MapViewText}>MapView</Text>
+                    </TouchableOpacity>
                
                  </View>
                
@@ -311,7 +315,8 @@ const styles = StyleSheet.create({
   
     area_three:{
         flex:10,
-        backgroundColor:'#9400d3'
+        backgroundColor:'#9400d3',
+        alignItems: 'center',
     },
     input: {
         // width: 200,
@@ -356,7 +361,26 @@ const styles = StyleSheet.create({
       save_Text:{
         color: 'yellow',
         fontWeight: '400'
+      },
+      MapView:{
+        width: 80,
+        height: 40,
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: 'yellow',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // marginHorizontal: 100,
+        marginLeft:10,
+        marginVertical: 10,
+        backgroundColor: '#ff8c00',
+        marginTop: 10,
+        marginBottom:10, 
+      },
+      MapViewText:{
+        color: '#fff',
       }
+
     // activeStyle: {
     //     flex: 90,
     //     marginHorizontal: 10,
