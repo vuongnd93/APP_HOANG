@@ -1,11 +1,19 @@
 
 
 // import {FETCH_JOB, FETCH_SUCCEEDED, FETCH_FAILED } from '../actionCreators';
+import AsyncStorage from 'react-native';
 const defaultState = {
     Job: [],
     isLoading: false,
     error: false
 };
+_onStartJob = async (oder_action)=>{
+    try {
+      await AsyncStorage.setItem(oder_action,'PROCESSING');
+    } catch (error) {
+       console.log(error);
+    }
+  }
 const JobReducers = (state = defaultState, action) => {
     switch (action.type) {
         case 'FETCH_SUCCEEDED':
@@ -19,7 +27,9 @@ const JobReducers = (state = defaultState, action) => {
                 e.oder_detail.map (e1 => {
                     // console.log('#jobReducer loop e = ', e1.Oder_detail_id);
                     if (e1.Oder_detail_id === action.oder_action){
-                        e1.status = "PROCESSING"                   
+                        e1.status = "PROCESSING";
+                        // _onStartJob(action.oder_action)
+                        // AsyncStorage.setItem(action.oder_action,'PROCESSING');                   
                     }                                 
                 })              
             })

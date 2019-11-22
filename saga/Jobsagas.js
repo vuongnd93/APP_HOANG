@@ -1,6 +1,7 @@
 
 // import { FETCH_JOB, FETCH_SUCCEEDED, FETCH_FAILED } from '../redux/actionCreators';
 //Saga effects
+import AsyncStorage from 'react-native';
 import { put, takeLatest } from 'redux-saga/effects';
 import { Api } from './Api';
 
@@ -25,6 +26,8 @@ function* statJob(action) {
         if (result =='OK'){         
             yield put({ type: 'STARTJOB', oder_action: action.Oder_detail_id});  
             yield put({ type: 'CHANGERSTATE', oder_id_state:action.Oder_detail_id});
+            // AsyncStorage.setItem(action.Oder_detail_id,'PROCESSING');
+            
         }        
                
     } catch (error) {        

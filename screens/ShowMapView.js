@@ -3,10 +3,10 @@ import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-const LATITUDE_DELTA = 0.009;
-const LONGITUDE_DELTA = 0.009;
-const LATITUDE = 18.7934829;
-const LONGITUDE = 98.9867401;
+// const LATITUDE_DELTA = 0.009;
+// const LONGITUDE_DELTA = 0.009;
+// const LATITUDE = 18.7934829;
+// const LONGITUDE = 98.9867401;
 
 const styles = StyleSheet.create({
   container: {
@@ -37,14 +37,19 @@ export default class ShowMapView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
+      // mapRegion: { latitude: 21.072325, longitude: 105.786573, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
+      // locationResult: null,
+      // location: {coords: { latitude: 21.072325, longitude: 105.786573}},
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+      latitude: 21.072325,
+      longitude: 105.786573,
       error: null,
       routeCoordinates: [],
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
         console.log('Get location START');
@@ -80,9 +85,9 @@ export default class ShowMapView extends Component {
   getMapRegion = () => ({
     latitude: this.state.latitude,
     longitude: this.state.longitude,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  });
+    latitudeDelta: this.state.latitudeDelta,
+    longitudeDelta: this.state.longitudeDelta,
+  });  
 
   render() {
     return (
