@@ -26,9 +26,10 @@ function* statJob(action) {
         if (result =='OK'){         
             yield put({ type: 'STARTJOB', oder_action: action.Oder_detail_id});  
             yield put({ type: 'CHANGERSTATE', oder_id_state:action.Oder_detail_id});
-            // AsyncStorage.setItem(action.Oder_detail_id,'PROCESSING');
-            
-        }        
+            // AsyncStorage.setItem(stateOder,'ACTIVE');            
+        }else{
+            yield put({ type: 'ERRORSTART', oder_action: action.Oder_detail_id});  
+        }      
                
     } catch (error) {        
         yield put({ type: 'ERROR'});
@@ -46,6 +47,7 @@ function* CompletedJob(action) {
         if (result =='OK'){
             yield put({ type: 'COMPLETEDJOB', oder_action:action.oder_detail_id});  
             yield put({ type: 'CHANGERCOMPLETED', oder_detail_id:action.oder_detail_id});
+            AsyncStorage.setItem(stateOder,'COMPLETED');
         }        
                
     } catch (error) {        

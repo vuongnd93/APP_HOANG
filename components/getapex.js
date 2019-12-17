@@ -1,10 +1,13 @@
 import React from 'react';
+import axios from 'axios';
+
+
 import { Button, StyleSheet, Text, View,Alert,Platform } from 'react-native';
 import { AuthSession } from 'expo';
 
 
 const redirectUrl ='http://118.70.197.124/ords/retail/oauth/token';
-const getApex = 'http://118.70.197.124/ords/retail/delivery/login?';
+const getApex = 'https://118.70.208.169/ords/retail/Delivery/Get_Deliveries';
 
 export default class Getapex extends React.Component {
   static navigationOption ={
@@ -27,15 +30,15 @@ export default class Getapex extends React.Component {
 
   _getdata = async () => {
     try {
-      let responce = await fetch(getApex,{
+      let responce = await axios(getApex,{
         method: 'GET',
-            Params: {
-              'P_UNAME': 'HC',
-              'P_PWD' :'231'
-            }
+            // Params: {
+            //   'P_UNAME': 'HC',
+            //   'P_PWD' :'231'
+            // }
         })
-       let responcejson = await responce.json();
-      console.log(responcejson);
+      //  let responcejson = await responce.json();
+      console.log(responce);
       //  console.log(responce.json());
     //    console.log(responcejson);
        return responcejson;

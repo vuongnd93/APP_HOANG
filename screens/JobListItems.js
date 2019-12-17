@@ -26,6 +26,8 @@ class JobListItems extends React.Component {
     }
   };
   componentWillMount() {
+    const stateOder = this.props.stateOder;
+    console.log(stateOder);
     // const { params } = this.props.navigation.state;
     //  const oder_detail_id = params.oder_detail_id;
     //  const { btnStatus, myData } = this.props;
@@ -62,8 +64,8 @@ class JobListItems extends React.Component {
      let status= "";
     //  let oder_state="";
        myData.map(e=>{
-        e.oder_detail.map(e1=>{
-          if(e1.Oder_detail_id==Oder_detail_id){
+        e.orders.map(e1=>{
+          if(e1.order_id==Oder_detail_id){
             status=e1.status; 
            }         
         });     

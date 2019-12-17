@@ -5,9 +5,9 @@ import { View, TextInput, TouchableOpacity, StyleSheet, Text,Image } from 'react
 import { CheckBox } from 'react-native-elements';
 import AddModal from './addmodal';
 import Transport from '../assets/transport.png';
-import Setting from '../assets/setting.png';
-import ToCuttomer from '../assets/checkout.png';
-import Lapdat from '../assets/lapdat.jpg';
+import Setting from '../assets/setting.jpg';
+import ToCuttomer from '../assets/checkout.jpg';
+// import Lapdat from '../assets/lapdat.jpg';
 import Config from '../assets/config.png';
 import Gold from '../assets/gold.png';
 
@@ -76,12 +76,12 @@ class Form extends Component {
                     </View>
 
                     <View style={styles.wrapp_event}>
-                        <TouchableOpacity style={styles.click_event}
+                        {/* <TouchableOpacity style={styles.click_event}
                         // onPress={() => this.props.navigator.navigation.navigate('JobDetail')}
                             >
                             <Text>Bốc Dỡ Hàng</Text> 
                             <Image source={Lapdat} style={{ width: 30, height: 30 }}/>                                                                              
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity style={styles.click_event} onPress={this._onPressAdd}>
                             <Text>Lắp Đặt</Text> 
                             <Image source={Config} style={{ width: 30, height: 30,marginTop: 5, }}/>                                                                              

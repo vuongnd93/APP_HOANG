@@ -82,6 +82,10 @@ class JobDetail extends React.Component {
       console.log('put location to server');
      }, 3000);
   }
+  OnPostServer(){
+  (this.props.stateOder.checkJob==='NO')?Alert.alert('start khong thanh cong'):
+  Alert.alert('start JOB thanh cong');
+}
   _onsave() {
     //  console.log('save success');
 
@@ -106,6 +110,7 @@ class JobDetail extends React.Component {
     const oder_state='START'
     this.props.START(Oder_detail_id,oder_state);
     this._onPutLocation();
+    this.OnPostServer();
   }
   _onStartJob = async () => {
     Alert.alert(

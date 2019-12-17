@@ -1,117 +1,183 @@
-import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from "react-native-maps";
+import React, { Component } from "react";
+import {
+  TextInput,
+  StyleSheet,
+  Text,
+  View,
+  Keyboard,
+  TouchableHighlight
+} from "react-native";
+import MapView, { Polyline, Marker } from "react-native-maps";
+import apiKey from '../google_api_key';
+// import _ from "lodash";
+// import PolyLine from "@mapbox/polyline";
 
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-
-// const LATITUDE_DELTA = 0.009;
-// const LONGITUDE_DELTA = 0.009;
-// const LATITUDE = 18.7934829;
-// const LONGITUDE = 98.9867401;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#34495e',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});
-
-export default class ShowMapView extends Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('del_id')
-    }
-  };
-
+export default class SHOWMAP extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // mapRegion: { latitude: 21.072325, longitude: 105.786573, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
-      // locationResult: null,
-      // location: {coords: { latitude: 21.072325, longitude: 105.786573}},
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-      latitude: 21.072325,
-      longitude: 105.786573,
-      error: null,
-      routeCoordinates: [],
+      error: "",
+      latitude: 0,
+      longitude: 0,
+      destination: "",
+      predictions: [],
+      pointCoords: []
     };
+    this.onChangeDestinationDebounced = _.debounce(
+      this.onChangeDestination,
+      1000
+    );
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    //Get current location and set initial region to this
     navigator.geolocation.getCurrentPosition(
       position => {
-        console.log('Get location START');
-        console.log(position);
         this.setState({
           latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null
+          longitude: position.coords.longitude
         });
       },
-      error => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 200000, maximumAge: 1000 }
+      error => console.error(error),
+      { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
     );
-
-    navigator.geolocation.watchPosition(
-      position => {
-        console.log('Location change')
-        console.log(position);
-        const { latitude, longitude } = position.coords;
-        const { routeCoordinates } = this.state;
-        const newCoordinate = { latitude, longitude };
-        this.setState({
-          latitude,
-          longitude,
-          routeCoordinates: routeCoordinates.concat([newCoordinate])
-        });
-      },
-      (error) => alert(JSON.stringify(error)),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0, distanceFilter: 1 });
   }
 
+  async getRouteDirections(destinationPlaceId, destinationName) {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${
+          this.state.latitude
+        },${
+          this.state.longitude
+        }&destination=place_id:${destinationPlaceId}&key=${apiKey}`
+      );
+      const json = await response.json();
+      console.log(json);
+      const points = PolyLine.decode(json.routes[0].overview_polyline.points);
+      const pointCoords = points.map(point => {
+        return { latitude: point[0], longitude: point[1] };
+      });
+      this.setState({
+        pointCoords,
+        predictions: [],
+        destination: destinationName
+      });
+      Keyboard.dismiss();
+      this.map.fitToCoordinates(pointCoords);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-  getMapRegion = () => ({
-    latitude: this.state.latitude,
-    longitude: this.state.longitude,
-    latitudeDelta: this.state.latitudeDelta,
-    longitudeDelta: this.state.longitudeDelta,
-  });  
+  async onChangeDestination(destination) {
+    const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${apiKey}
+    &input=${destination}&location=${this.state.latitude},${
+      this.state.longitude
+    }&radius=2000`;
+    console.log(apiUrl);
+    try {
+      const result = await fetch(apiUrl);
+      const json = await result.json();
+      this.setState({
+        predictions: json.predictions
+      });
+      console.log(json);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   render() {
+    let marker = null;
+
+    if (this.state.pointCoords.length > 1) {
+      marker = (
+        <Marker
+          coordinate={this.state.pointCoords[this.state.pointCoords.length - 1]}
+        />
+      );
+    }
+
+    const predictions = this.state.predictions.map(prediction => (
+      <TouchableHighlight
+        onPress={() =>
+          this.getRouteDirections(
+            prediction.place_id,
+            prediction.structured_formatting.main_text
+          )
+        }
+        key={prediction.id}
+      >
+        <View>
+          <Text style={styles.suggestions}>
+            {prediction.structured_formatting.main_text}
+          </Text>
+        </View>
+      </TouchableHighlight>
+    ));
+
     return (
       <View style={styles.container}>
         <MapView
-          provider={PROVIDER_GOOGLE}
+          ref={map => {
+            this.map = map;
+          }}
           style={styles.map}
-          region={this.getMapRegion()}
+          region={{
+            latitude: this.state.latitude,
+            longitude: this.state.longitude,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121
+          }}
+          showsUserLocation={true}
         >
           <Polyline
-            coordinates={this.state.routeCoordinates}
-            strokeWidth={5} />
-
-          {/* <Marker coordinate={this.getMapRegion()} /> */}
-
-          <Marker
-            coordinate={this.getMapRegion()}
-            title="Driver"
-            description="Current location"
+            coordinates={this.state.pointCoords}
+            strokeWidth={4}
+            strokeColor="red"
           />
+          {marker}
         </MapView>
-
+        <TextInput
+          placeholder="Enter destination..."
+          style={styles.destinationInput}
+          value={this.state.destination}
+          clearButtonMode="always"
+          onChangeText={destination => {
+            console.log(destination);
+            this.setState({ destination });
+            this.onChangeDestinationDebounced(destination);
+          }}
+        />
+        {predictions}
       </View>
     );
   }
 }
 
+const styles = StyleSheet.create({
+  suggestions: {
+    backgroundColor: "white",
+    padding: 5,
+    fontSize: 18,
+    borderWidth: 0.5,
+    marginLeft: 5,
+    marginRight: 5
+  },
+  destinationInput: {
+    height: 40,
+    borderWidth: 0.5,
+    marginTop: 50,
+    marginLeft: 5,
+    marginRight: 5,
+    padding: 5,
+    backgroundColor: "white"
+  },
+  container: {
+    ...StyleSheet.absoluteFillObject
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject
+  }
+});

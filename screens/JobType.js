@@ -76,9 +76,12 @@ class JobType extends React.Component {
         return (
 
             <View style={styles.wrapper}>
+               <View  style={styles.view_header}>
+                <Text style={styles.view_header_text}>Danh sách công việc</Text>
                 <TouchableOpacity style={styles.view_button} onPress={() => this.props.FETCH_JOB()}>
-                    <Text style={styles.textGetjob}>GetJob...</Text>
+                    <Text style={styles.textGetjob}>Show Job</Text>
                 </TouchableOpacity>
+                </View> 
                 {this.props.error ? this._renderMessage() : null}
 
                 <View style={styles.activeStyle}>
@@ -87,11 +90,11 @@ class JobType extends React.Component {
                         renderItem={({ item, index }) => <JobTypeItems
                             index={index}
                             parentFlatList={this}
-                            job={item.job}
-                            id={item.Oder_id}
-                            onPress={() => this.props.navigation.navigate('JobList', { oder_detail: item.oder_detail, job_id: item.Oder_id})}
+                            method={item.đơn_hàng}
+                            id={item.delivery_id}
+                            onPress={() => this.props.navigation.navigate('JobList', { oder_detail: item.orders, job_id: item.delivery_id})}
                         />}
-                        keyExtractor={item => item.Oder_id}
+                        keyExtractor={item => item.mã}
                         refreshControl={
                             <RefreshControl
                                 refreshing={false}
@@ -128,21 +131,38 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    view_header:{
+    flexDirection:'row',
+    justifyContent: 'space-between',
+    backgroundColor:'#fff',
+    borderBottomColor:'#dcdcdc',
+    borderBottomWidth:1,
+    marginBottom:5,
+    },
     text_header: {
         alignItems: 'center',
         color: '#fff'
     },
     view_button: {
-        marginTop: 15,
-        backgroundColor: '#29007B',
-        marginHorizontal: 10,
-        width: 130,
-        height: 50,
-        borderRadius: 20,
-        paddingVertical: 9,
-        marginBottom: 15,
+        flexDirection:'row',      
+        // marginTop: 15,
+        backgroundColor: '#0A5FAE',
+        // marginHorizontal: 10,
+        // width: 130,
+        // height: 50,
+        // borderRadius: 20,
+        paddingVertical: 15,
+        paddingHorizontal:15,
+        // marginBottom: 15,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    view_header_text:{
+    paddingVertical: 15,
+    paddingHorizontal:15,
+    fontSize:20,
+    fontWeight:'300',
+
     },
     message: {
         color: 'blueviolet',

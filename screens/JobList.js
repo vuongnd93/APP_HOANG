@@ -55,8 +55,8 @@ class JobList extends React.Component {
     let btnStatus=this.props.btnStatus;
     let oder_detail= "";
        myData.map(e=>{
-         if(e.Oder_id==job_id){
-          oder_detail=e.oder_detail;
+         if(e.delivery_id==job_id){
+          oder_detail=e.orders;
          }
       });
       if (btnStatus === 'PROCESSING') return oder_detail.filter(e => e.status === 'PROCESSING');
@@ -100,13 +100,13 @@ class JobList extends React.Component {
 
             data={this.get_Oder_Detail()}
             renderItem={({ item }) => <JobListItems
-              Oder_detail_id={item.Oder_detail_id}
+              Oder_detail_id={item.order_id}
               id={item.Order}
               time={item.Odertime}
               status={item.status}
               onPress={() => this.props.navigation.navigate('JobDetail', { job_id:job_id,oder_detail_id:item.Oder_detail_id,item })}
             />}
-            keyExtractor={item => item.Oder_detail_id}
+            keyExtractor={item => item.order_id}
           />
         </View>
         <Filter />
